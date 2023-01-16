@@ -1,6 +1,7 @@
 @import url(../../vendor/normalize.css);
+@import url(../../vendor/fonts/inter.css);
 
-.App {
+.page {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
@@ -10,8 +11,17 @@
   margin: 0 auto;
   padding: 0;
   font-family: 'Inter', Arial, sans-serif;
-  background-color: #000000;
+  background-color: #202020;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   min-height: 100vh; 
+  max-width: 1280px;
+  min-width: 320px;
+  font-size: 0;
+}
+
+.content {
+  padding: 0;
+  margin: 0;
+  width: 100%;   
 }
