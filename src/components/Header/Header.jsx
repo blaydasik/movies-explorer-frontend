@@ -1,14 +1,14 @@
 import './Header.css';
 
-import Navigation from '../Navigation/Navigation';
-import Account from '../Account/Account';
-import RegLog from '../RegLog/RegLog';
+import Navigation from './Navigation/Navigation';
+import Account from './Account/Account';
+import RegLog from './RegLog/RegLog';
+import SideMenu from './SideMenu/SideMenu';
 
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import classnames from 'classnames';
-import SideMenu from '../SideMenu/SideMenu';
 
 function Header({ loggedIn }) {
   const [isMenuDisplayed, setIsMenuDisplayed] = useState(false);
@@ -47,7 +47,7 @@ function Header({ loggedIn }) {
   });
 
   return (
-    <div className={classNameHeader}>
+    <section className={classNameHeader}>
       <Link className={classNameLogo} to="/" />
 
       <nav className={classNameNavigation}>
@@ -70,7 +70,7 @@ function Header({ loggedIn }) {
         isMenuDisplayed={isMenuDisplayed}
         buttonClick={handleBurgerButtonClick}
       />
-    </div>
+    </section>
   )
 }
 

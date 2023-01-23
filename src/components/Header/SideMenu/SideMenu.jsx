@@ -11,7 +11,7 @@ function SideMenu({ isMenuDisplayed, buttonClick }) {
   const classNameSideMenuContainer = classnames('side-menu__container')
 
   return (
-    <div className={classNameSideMenu}>
+    <section className={classNameSideMenu}>
       <div className={classNameSideMenuContainer}>
         <button className="side-menu__button-close" onClick={buttonClick} />
         <div className="side-menu__nav-container">
@@ -19,7 +19,7 @@ function SideMenu({ isMenuDisplayed, buttonClick }) {
           <Account />
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 
