@@ -119,7 +119,7 @@
 }
 
 .header__account {
-  margin: 21px 70px 21px calc((100% - 212px) / 2 - 157px);
+  margin: 21px 70px 21px calc((100% - 212px) / 2 - 170px);
   padding: 0;
   display: flex;
 }
