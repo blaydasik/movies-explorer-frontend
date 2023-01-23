@@ -1,0 +1,145 @@
+.header {
+  margin: 0;
+  padding: 0;
+  background-color: #073042;
+  width: 100%;
+  display: flex;
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    justify-content: space-between;
+  }
+}
+
+.header_logged-in {
+  background-color: #202020;
+}
+
+.header_space-between {
+  justify-content: space-between;
+}
+
+.header_inactive {
+  display: none;
+}
+
+.header__logo {
+  margin: 18px 0 18px 70px;
+  padding: 0;
+  width: 38px;
+  height: 38px;
+  display: block;
+  background-image: url(../../images/logo/logo.svg);
+  background-size: cover;
+  transition: 0.5s ease;
+}
+
+.header__logo:hover {
+  opacity: 0.6;
+}
+
+@media screen and (max-width: 1023px) {
+  .header__logo {
+    margin-left: 50px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .header__logo {
+    margin-left: 30px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .header__logo {
+    margin-left: 14px;
+  }
+}
+
+.header__logo_centered {
+  margin: 70px 0 40px calc((100% - 396px) / 2);
+}
+
+@media screen and (max-width: 425px) {
+  .header__logo_centered {
+    margin: 56px 0 50px calc((100% - 3px) / 2);
+  }
+}
+
+.header__navigation {
+  display: none;
+}
+
+.header__navigation_active {
+  display: flex;
+  margin: 28px 0 28px calc((100% - 212px) / 2 - 108px);
+}
+
+@media screen and (max-width: 768px) {
+  .header__navigation_active {
+    display: none;
+  }
+}
+
+.header__button-burger {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .header__button-burger {
+    margin: 15px 30px 15px 0;
+    padding: 0;
+    width: 44px;
+    height: 44px;
+    display: block;
+    background-image: url(../../images/button-burger.svg);
+    background-color: transparent;
+    background-size: cover;
+    transition: 0.5s ease;
+    border: none;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .header__button-burger {
+    margin-right: 14px;
+    width: 40px;
+    height: 43px;
+  }
+}
+
+.header__button-burger:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.header__button-burger_inactive {
+  display: none;
+}
+
+.header__account {
+  margin: 21px 70px 21px calc((100% - 212px) / 2 - 157px);
+  padding: 0;
+  display: flex;
+}
+
+.header__account_inactive {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .header__account {
+    display: none;
+  }
+}
+
+.header__reg-log {
+  margin: 21px 70px 21px 0;
+  padding: 0;
+  display: flex;
+}
+
+.header__reg-log_inactive {
+  display: none;
+}

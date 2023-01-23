@@ -1,0 +1,29 @@
+.not-found {
+  margin: 0;
+  padding: 0;
+
+  height: 100vh;
+  background-image: url('../../images/not-found.jpg');
+  backround-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+}
+
+.not-found__header {
+  margin: 246px auto 5px;
+  padding: 0;
+  color: #ffffff;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 140px;
+  line-height: 1.207;
+  display: block;
+}
+
+.not-found__span {
+
+}
+
+.not-found__link {
+
+}
