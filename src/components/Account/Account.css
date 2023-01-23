@@ -1,0 +1,83 @@
+.account {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  width: 100px;
+}
+
+@media screen and (max-width: 768px) {
+  .account {
+    margin: 0 auto 90px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .account {
+    margin-bottom: 46px;
+  }
+}
+
+.account__link {
+  margin: 8px 7px 8px 11px;
+  padding: 0;
+  cursor: pointer;
+  color: #ffffff;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 0.923;
+  text-decoration: none;
+  display: block;
+}
+
+.account__link:hover {
+  font-weight: 500;
+}
+
+@media screen and (max-width: 768px) {
+  .account__link {
+    font-weight: 500;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #202020;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .account__link {
+    font-size: 10px;
+    line-height: 1.6;
+    margin: 6px 0;
+    padding-bottom: 7px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .account__link:hover {
+    border-bottom: 2px solid;
+  }
+}
+
+.account__button-exit {
+  margin: 3px 3px 3px 0px;
+  padding: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50px;
+  background-color: #313131;
+  border: none;
+  display: flex;
+  cursor: pointer;
+  transition: 0.5s ease;
+}
+
+.account__button-exit:hover {
+  opacity: 0.8;
+ }
+
+.account__logo {
+  margin: auto;
+  width: 10.38px;
+  height: 10.67px;
+  background-image: url('../../images/button-exit.svg');
+  background-size: cover;
+}
