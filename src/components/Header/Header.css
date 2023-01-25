@@ -1,7 +1,7 @@
 .header {
   margin: 0;
   padding: 0;
-  background-color: #073042;
+  background-color: #202020;
   width: 100%;
   display: flex;
 }
@@ -12,8 +12,8 @@
   }
 }
 
-.header_logged-in {
-  background-color: #202020;
+.header_main-page {
+  background-color: #073042;
 }
 
 .header_space-between {

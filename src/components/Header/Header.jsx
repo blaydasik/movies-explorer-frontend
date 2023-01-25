@@ -22,11 +22,10 @@ function Header({ loggedIn }) {
   //определим, находимся ли мы на странице регистрации или входа
   const isSignInSignUp =
     location.pathname === '/signin' || location.pathname === '/signup';
-  const isSignInSignUpProfile =
-    isSignInSignUp || location.pathname === '/profile';
   const isNotFound = location.pathname === '/not-found';
+  const isMainPage = location.pathname === '/';
   const classNameHeader = classnames('header', {
-    'header_logged-in': loggedIn || isSignInSignUpProfile,
+    'header_main-page': isMainPage,
     'header_space-between': !loggedIn,
     header_inactive: isNotFound,
   });
