@@ -1,5 +1,5 @@
-import './Promo.css';
-import promoImg from '../../../images/promo-img.svg';
+import './Promo.css'
+import promoImg from '../../../images/promo-img.svg'
 
 function Promo() {
   return (
@@ -15,8 +15,11 @@ function Promo() {
         <a className="promo__link" href="#portfolio">
           Спасите мой мозг
         </a>
-        <img className='promo__picture'
-            src={promoImg} alt='изображение земли, составленное из слов web' />
+        <img
+          className="promo__picture"
+          src={promoImg}
+          alt="изображение земли, составленное из слов web"
+        />
       </div>
     </article>
   )
