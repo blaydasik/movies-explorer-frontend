@@ -52,6 +52,7 @@ function Header({ loggedIn }) {
       <nav className={classNameNavigation}>
         <Navigation 
           isMenuDisplayed={isMenuDisplayed}
+          buttonClick={handleBurgerButtonClick}
         />
       </nav>
 
