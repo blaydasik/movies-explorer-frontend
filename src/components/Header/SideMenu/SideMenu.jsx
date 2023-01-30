@@ -1,8 +1,8 @@
-import './SideMenu.css';
-import Navigation from '../Navigation/Navigation';
-import Account from '../Account/Account';
+import './SideMenu.css'
+import Navigation from '../Navigation/Navigation'
+import Account from '../Account/Account'
 
-import classnames from 'classnames';
+import classnames from 'classnames'
 
 function SideMenu({ isMenuDisplayed, buttonClick }) {
   const classNameSideMenu = classnames('side-menu', {
@@ -15,7 +15,10 @@ function SideMenu({ isMenuDisplayed, buttonClick }) {
       <div className={classNameSideMenuContainer}>
         <button className="side-menu__button-close" onClick={buttonClick} />
         <div className="side-menu__nav-container">
-          <Navigation />
+          <Navigation
+            isMenuDisplayed={isMenuDisplayed}
+            buttonClick={buttonClick}
+          />
           <Account />
         </div>
       </div>
@@ -23,4 +26,4 @@ function SideMenu({ isMenuDisplayed, buttonClick }) {
   )
 }
 
-export default SideMenu;
+export default SideMenu

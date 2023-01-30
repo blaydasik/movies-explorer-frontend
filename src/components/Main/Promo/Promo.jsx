@@ -3,8 +3,8 @@ import promoImg from '../../../images/promo-img.svg'
 
 function Promo() {
   return (
-    <article className="promo">
-      <div className="promo__container">
+    <article className="article promo" id="promo">
+      <div className="article__grid-container promo__container">
         <h1 className="promo__header">
           Учебный проект студента факультета Веб&#8209;разработки.
         </h1>
