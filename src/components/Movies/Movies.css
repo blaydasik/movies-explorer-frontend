@@ -1,6 +1,6 @@
 .movies-preloader {
   width: calc(100% - 140px);
-  dispaly: flex;
+  display: flex;
   margin: 0 auto;
   padding: 0;
 }

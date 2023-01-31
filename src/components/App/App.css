@@ -72,7 +72,7 @@
 
 @media screen and (max-width: 425px) {
   .article__header {
-    font-size: 18x;
+    font-size: 18px;
     line-height: 1.222;
     padding-bottom: 28px;
   }

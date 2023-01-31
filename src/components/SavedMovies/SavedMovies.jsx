@@ -1,4 +1,5 @@
 import './SavedMovies.css'
+import '../Movies/Movies.css'
 
 import SearchForm from '../Movies/SearchForm/SearchForm'
 import Preloader from '../Movies/Preloader/Preloader'
