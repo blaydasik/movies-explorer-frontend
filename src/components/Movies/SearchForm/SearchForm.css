@@ -111,7 +111,7 @@
   width: 34px;
   height: 34px;
   background-image: url('../../../images/button-search-film.svg');
-  background-size: content;
+  background-size: contain;
   border: none;
   border-radius: 48px;
   transition: 0.5s ease;
