@@ -4,8 +4,8 @@ import { useLocation } from 'react-router-dom'
 import classnames from 'classnames'
 
 import './MoviesCard.css'
-import { CurrentUserContext } from '../../../contexts/CurrentUserContext'
 
+import { CurrentUserContext } from '../../../contexts/CurrentUserContext'
 import { getTimeFromMins } from '../../../utils/constants'
 
 function MoviesCard({ card, handleDeleteFilm, handleSaveFilm }) {
@@ -16,8 +16,8 @@ function MoviesCard({ card, handleDeleteFilm, handleSaveFilm }) {
   const location = useLocation()
   const isSavedMovies = location.pathname === '/saved-movies'
 
-  //определим сохранен ли фильм текущим пользователем (currentUser._id), до подключения api захардкорен
-  const [isSaved, setIsSave] = useState(card.owner.some((user) => user === 124))
+  //определим сохранен ли фильм текущим пользователем (currentUser._id)
+  const [isSaved, setIsSave] = useState(card.owner.some((user) => user === currentUser._id))
   const classNameButtonSave = classnames({
     'movies-card__button-save-clicked': isSaved,
     'movies-card__button-save': !isSaved && !isSavedMovies,

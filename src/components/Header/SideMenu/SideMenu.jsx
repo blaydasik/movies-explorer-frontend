@@ -1,10 +1,11 @@
+import classnames from 'classnames'
+
 import './SideMenu.css'
+
 import Navigation from '../Navigation/Navigation'
 import Account from '../Account/Account'
 
-import classnames from 'classnames'
-
-function SideMenu({ isMenuDisplayed, buttonClick }) {
+function SideMenu({ isMenuDisplayed, buttonClick, onSignOut }) {
   const classNameSideMenu = classnames('side-menu', {
     'side-menu_opened': isMenuDisplayed,
   })
@@ -19,7 +20,7 @@ function SideMenu({ isMenuDisplayed, buttonClick }) {
             isMenuDisplayed={isMenuDisplayed}
             buttonClick={buttonClick}
           />
-          <Account />
+          <Account onSignOut={onSignOut}/>
         </div>
       </div>
     </section>
