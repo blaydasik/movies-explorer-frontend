@@ -12,6 +12,8 @@ import NotFound from '../NotFound/NotFound'
 import Movies from '../Movies/Movies'
 import SavedMovies from '../SavedMovies/SavedMovies'
 import Profile from '../Profile/Profile'
+import Register from '../Register/Register'
+import Login from '../Login/Login'
 
 //временный набор данных для подключения api
 import { cardsAll } from '../../utils/cards'
@@ -24,7 +26,7 @@ function App() {
     email: 'mail@mail.com',
   })
   //залогинен пользователь или нет
-  const [loggedIn, setLoggedIn] = useState(true)
+  const [loggedIn, setLoggedIn] = useState(false)
   //общая ушипка
   const [commonError, setCommonError] = useState('')
   //слайдер короткометражек
@@ -116,6 +118,16 @@ function App() {
     setIsDisabled(true)
   }
 
+  // обработчик регистрации нового пользователя
+  function handleSubmitRegistration(userData) {
+    console.log(`registration userData=${userData}`)
+  }
+
+  // обработчик логина
+  function handleSubmitLogin(userData) {
+    console.log(`login userData=${userData}`)
+  }
+
   // обработчик logout
   function onSignOut() {
     navigate('/')
@@ -150,6 +162,16 @@ function App() {
               onSignOut={onSignOut}
             />
           }
+        />
+        <Route
+          path="/signup"
+          element={
+            <Register handleSubmitRegistration={handleSubmitRegistration} />
+          }
+        />
+        <Route
+          path="/signin"
+          element={<Login handleSubmitLogin={handleSubmitLogin} />}
         />
         <Route
           exact
