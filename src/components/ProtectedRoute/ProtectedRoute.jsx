@@ -12,7 +12,7 @@ function ProtectedRoute({ component: Component, ...props }) {
   if (loggedIn) {
     return (<Component {...props} />);
   } else {
-    return (<Navigate to="/" replace/>);
+    return (<Navigate to="/signin" replace/>);
   }
 }
 

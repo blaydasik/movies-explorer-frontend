@@ -1,23 +1,20 @@
-import './Account.css';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
-function Account() {
+import './Account.css'
 
+function Account({ onSignOut }) {
   return (
     <ul className="account">
       <li>
-        <Link className='account__link' 
-          to="/profile">
+        <Link className="account__link" to="/profile">
           Аккаунт
         </Link>
       </li>
       <li>
-        <Link className='account__button-exit' to="/">
-          <div className="account__logo"></div>
-        </Link>
+        <button className="account__button-exit" onClick={onSignOut} />
       </li>
     </ul>
-  );
+  )
 }
 
-export default Account;
+export default Account

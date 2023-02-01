@@ -1,5 +1,6 @@
-import './RegLog.css';
 import { Link } from "react-router-dom";
+
+import './RegLog.css';
 
 function RegLog() {
 

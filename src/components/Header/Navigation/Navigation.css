@@ -30,7 +30,7 @@
 }
 
 .navigation-block__link:hover {
-  font-weight: 500;
+  opacity: 0.7;
 }
 
 @media screen and (max-width: 768px) {
@@ -48,15 +48,20 @@
   }
 }
 
-@media screen and (max-width: 768px) {
-  .navigation-block__link:hover {
-    border-bottom: 2px solid;
-  }
-}
-
 @media screen and (min-width: 768px) {
   .navigation-block__link_invisible {
     display: none;
+  }
+}
+
+.navigation-block__link_active {
+  font-weight: 500;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 768px) {
+  .navigation-block__link_active {
+    border-bottom: 2px solid;
   }
 }
 
