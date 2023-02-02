@@ -58,12 +58,18 @@
 }
 
 .header__logo_centered {
-  margin: 70px 0 40px calc((100% - 396px) / 2);
+  margin: 70px calc((100% - 396px) / 2) 40px;
+}
+
+@media screen and (max-width: 768px) {
+  .header__logo_centered {
+      margin: 70px calc((100% - 396px) / 2) 40px;
+  }
 }
 
 @media screen and (max-width: 425px) {
   .header__logo_centered {
-    margin: 56px 0 50px calc((100% - 3px) / 2);
+    margin: 56px auto 50px;
   }
 }
 
