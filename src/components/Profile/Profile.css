@@ -115,12 +115,10 @@
 }
 
 .profile__input:focus {
-  background-color: #828282;
+    color: #ee3465;
 }
 
 .profile__input:placeholder-shown {
-  color: #ffffff;
-  background-color: white;
   text-align: center;
 }
 
@@ -129,7 +127,7 @@
   padding: 0;
   width: 100%;
   min-height: 16px;
-  color: #ff00c4;
+  color: #ee3465;
   font-style: normal;
   font-weight: 400;
   font-size: 11px;
@@ -160,6 +158,10 @@
     font-size: 12px;
     line-height: 1.25;
   }
+}
+
+.profile__button-submit:disabled {
+    color: #8b8b8b;
 }
 
 .profile__button-submit:disabled:hover {

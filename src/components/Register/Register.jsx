@@ -1,12 +1,29 @@
+import React from 'react'
+
 import './Register.css'
 
+import { CurrentUserContext } from '../../contexts/CurrentUserContext'
+import { useFormAndValidation } from '../../hooks/useForm'
+
 function Register({ handleSubmitRegistration }) {
+   //подпишемся на контекст текущего пользователя
+   const commonError = React.useContext(CurrentUserContext).commonError
+  //подключим хук для валидации формы
+  const {
+    values,
+    setValues,
+    handleChange,
+    errors,
+    isValid,
+    setIsValid,
+  } = useFormAndValidation()
+
   return (
     <main className="main">
-      <article className="profile">
-        <h2 className="profile__header">Привет, {currentUser.name}!</h2>
-        <form className="profile__form" onSubmit={handleEditSaveButton}>
-          <fieldset className="profile__fieldset">
+      <article className="register">
+        <h2 className="register__header">Добро пожаловать!</h2>
+        <form className="register__form" onSubmit={handleSubmitRegistration}>
+          <fieldset className="register__fieldset">
             <label className="profile__label">
               <span className="profile__span">Имя</span>
               <input
@@ -18,7 +35,6 @@ function Register({ handleSubmitRegistration }) {
                 maxLength="30"
                 value={values['name'] || ''}
                 onChange={handleChange}
-                disabled={isDisabled}
                 placeholder="Имя"
                 required
               ></input>
@@ -33,7 +49,6 @@ function Register({ handleSubmitRegistration }) {
                 type="email"
                 value={values['email'] || ''}
                 onChange={handleChange}
-                disabled={isDisabled}
                 placeholder="e-mail"
                 required
               ></input>
@@ -44,15 +59,13 @@ function Register({ handleSubmitRegistration }) {
               className="profile__button-submit"
               id="profile-submit"
               type="submit"
-              disabled={isButtonDisabled}
+              disabled={isValid}
             >
-              {textOnButton}
+              
             </button>
           </fieldset>
         </form>
-        <button className="profile__button-exit" onClick={onSignOut}>
-          Выйти из аккаунта
-        </button>
+
       </article>
     </main>
   )

@@ -26,7 +26,7 @@ function App() {
     email: 'mail@mail.com',
   })
   //залогинен пользователь или нет
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(true)
   //общая ушипка
   const [commonError, setCommonError] = useState('')
   //слайдер короткометражек
@@ -130,6 +130,7 @@ function App() {
 
   // обработчик logout
   function onSignOut() {
+    setLoggedIn(false)
     navigate('/')
   }
 
