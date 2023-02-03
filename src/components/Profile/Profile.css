@@ -58,7 +58,7 @@
 .profile__label {
   width: 100%;
   margin: 0 auto;
-  padding: 16px 0 0;
+  padding: 32px 0 0;
   display: grid;
   grid-template-columns: auto 1fr auto;
   grid-template-rows: repeat(2, auto);
@@ -126,7 +126,7 @@
   margin: 2px auto;
   padding: 0;
   width: 100%;
-  min-height: 16px;
+  min-height: 32px;
   color: #ee3465;
   font-style: normal;
   font-weight: 400;
