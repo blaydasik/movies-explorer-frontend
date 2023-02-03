@@ -41,7 +41,7 @@ function App() {
   //отслеживаем ширниу экрана
   const [width, setWidth] = useState(window.innerWidth)
   //состояние popup с ошибкой api
-  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(true)
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false)
   //определяет успешно ли отработало api
   const [isSuccess, setIsSucess] = useState(false)
   const [message, setMessage] = useState('Приветики омлетики')
