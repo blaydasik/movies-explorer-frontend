@@ -127,11 +127,15 @@ function App() {
   // обработчик регистрации нового пользователя
   function handleSubmitRegistration(userData) {
     console.log(`registration userData=${JSON.stringify(userData)}`)
+    setLoggedIn(true)
+    navigate('/movies')
   }
 
   // обработчик логина
   function handleSubmitLogin(userData) {
     console.log(`login userData=${JSON.stringify(userData)}`)
+    setLoggedIn(true)
+    navigate('/movies')
   }
 
   // обработчик logout
@@ -225,7 +229,7 @@ function App() {
         />
         <Route exact path="/not-found" element={<NotFound />} />
         (//перенаправление всех других роутов)
-        <Route path="*" element={<Navigate to="/not-found" />} />
+        <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Routes>
 
       <Footer />
