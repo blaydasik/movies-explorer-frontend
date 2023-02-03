@@ -14,6 +14,7 @@ import SavedMovies from '../SavedMovies/SavedMovies'
 import Profile from '../Profile/Profile'
 import Register from '../Register/Register'
 import Login from '../Login/Login'
+import InfoTooltip from '../InfoTooltip/InfoTooltip'
 
 //временный набор данных для подключения api
 import { cardsAll } from '../../utils/cards'
@@ -39,6 +40,11 @@ function App() {
   const [isFailed, setIsFailed] = useState(false)
   //отслеживаем ширниу экрана
   const [width, setWidth] = useState(window.innerWidth)
+  //состояние popup с ошибкой api
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(true)
+  //определяет успешно ли отработало api
+  const [isSuccess, setIsSucess] = useState(false)
+  const [message, setMessage] = useState('Приветики омлетики')
 
   const navigate = useNavigate()
 
@@ -120,18 +126,23 @@ function App() {
 
   // обработчик регистрации нового пользователя
   function handleSubmitRegistration(userData) {
-    console.log(`registration userData=${userData}`)
+    console.log(`registration userData=${JSON.stringify(userData)}`)
   }
 
   // обработчик логина
   function handleSubmitLogin(userData) {
-    console.log(`login userData=${userData}`)
+    console.log(`login userData=${JSON.stringify(userData)}`)
   }
 
   // обработчик logout
   function onSignOut() {
     setLoggedIn(false)
     navigate('/')
+  }
+
+  //обработчик вывода попапа с ошибкой api
+  function handleInfoTooltip() {
+    setIsInfoTooltipPopupOpen(!isInfoTooltipPopupOpen)
   }
 
   //установим временную задержку для обработчика изменения разрешения экрана
@@ -218,6 +229,13 @@ function App() {
       </Routes>
 
       <Footer />
+
+      <InfoTooltip
+        isOpen={isInfoTooltipPopupOpen}
+        onClose={handleInfoTooltip}
+        isSuccess={isSuccess}
+        message={message}
+      />
     </CurrentUserContext.Provider>
   )
 }
