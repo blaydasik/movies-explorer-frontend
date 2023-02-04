@@ -68,6 +68,8 @@
   line-height: 1.214;
   background-color: #202020;
   border: none;
+  outline: none;
+  border-bottom: 1px solid transparent;
 }
 
 .search-form__input::placeholder {
@@ -75,7 +77,7 @@
 }
 
 .search-form__input:focus {
-  outline: none;
+  border-bottom: 1px solid #4285f4;
 }
 
 @media screen and (max-width: 425px) {
@@ -124,6 +126,11 @@
 .search-form__submit-button:hover {
   opacity: 0.8;
   cursor: pointer;
+}
+
+.search-form__submit-button:disabled:hover {
+  opacity: 1;
+  cursor: auto;
 }
 
 .search-form__label-slider {

@@ -17,7 +17,7 @@ function Footer() {
   });
 
   return (
-    <article className={classNameFooter}>
+    <footer className={classNameFooter}>
       <h2 className="footer__text">
         Мы строили, строили и наконец построили! Ура!
       </h2>
@@ -44,7 +44,7 @@ function Footer() {
           </li>
         </ul>
       </div>
-    </article>
+    </footer>
   )
 }
 

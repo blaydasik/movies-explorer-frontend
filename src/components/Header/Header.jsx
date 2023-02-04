@@ -50,7 +50,7 @@ function Header({ onSignOut }) {
   })
 
   return (
-    <section className={classNameHeader}>
+    <header className={classNameHeader}>
       <Link className={classNameLogo} to="/" />
 
       <nav className={classNameNavigation}>
@@ -75,7 +75,7 @@ function Header({ onSignOut }) {
         buttonClick={handleBurgerButtonClick}
         onSignOut={onSignOut}
       />
-    </section>
+    </header>
   )
 }
 

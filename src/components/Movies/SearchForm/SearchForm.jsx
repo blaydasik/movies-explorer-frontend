@@ -23,7 +23,7 @@ function SearchForm({ isShortFilms, setIsShortFilms, handleShortFilms }) {
               type='text' 
               name='film' 
               minLength='3' 
-              maxLength='20' 
+              maxLength='30' 
               values={values['film']}
               onChange={handleChange}
               required/>
