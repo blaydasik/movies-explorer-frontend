@@ -27,8 +27,8 @@ function Profile({ handleSubmitProfile, onSignOut }) {
     values['name'] !== currentUser.name || values['email'] !== currentUser.email
   // кнопка в состоянии submit
   const [isSubmitButton, setIsSubmitButton] = useState(false)
-  // кнопка заблокирована от нажатия
-  const isButtonDisabled = isSubmitButton ? !isValid : false
+  // кнопка заблокирована от нажатия, если данные не валидны или не менялись
+  const isButtonDisabled = isSubmitButton ? ( isValid && isChanged ? "" :"disabled" ) : ""
   const textOnButton = isSubmitButton ? 'Сохранить' : 'Редактировать'
 
   //получим данные пользователя в управляемые компоненты
@@ -41,7 +41,7 @@ function Profile({ handleSubmitProfile, onSignOut }) {
   function handleEditSaveButton(evt) {
     evt.preventDefault()
     if (isSubmitButton) {
-      handleSubmitProfile(setIsSubmitButton, setIsDisabled, isChanged, values)
+      handleSubmitProfile(setIsSubmitButton, setIsDisabled, values)
     } else {
       setIsSubmitButton(true)
       setIsDisabled(false)

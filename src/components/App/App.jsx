@@ -109,17 +109,9 @@ function App() {
   }
 
   // обработчик сабмита профиля
-  function handleSubmitProfile(
-    setIsSubmitButton,
-    setIsDisabled,
-    isChanged,
-    values,
-  ) {
-    if (isChanged) {
-      currentUser.name = values.name
-      currentUser.email = values.email
-      setCommonError('При обновлении профиля произошла ошибка.')
-    }
+  function handleSubmitProfile(setIsSubmitButton, setIsDisabled, values) {
+    setCurrentUser(values)
+    setCommonError('При обновлении профиля произошла ошибка.')
     setIsSubmitButton(false)
     setIsDisabled(true)
   }
@@ -171,15 +163,6 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Main />} />
         <Route
-          path="/profile"
-          element={
-            <Profile
-              handleSubmitProfile={handleSubmitProfile}
-              onSignOut={onSignOut}
-            />
-          }
-        />
-        <Route
           path="/signup"
           element={
             <Register handleSubmitRegistration={handleSubmitRegistration} />
@@ -190,7 +173,16 @@ function App() {
           element={<Login handleSubmitLogin={handleSubmitLogin} />}
         />
         <Route
-          exact
+          path="/profile"
+          element={
+            <ProtectedRoute
+              component={Profile}
+              handleSubmitProfile={handleSubmitProfile}
+              onSignOut={onSignOut}
+            />
+          }
+        />
+        <Route
           path="/movies"
           element={
             <ProtectedRoute
@@ -210,7 +202,6 @@ function App() {
           }
         />
         <Route
-          exact
           path="/saved-movies"
           element={
             <ProtectedRoute
@@ -227,7 +218,7 @@ function App() {
             />
           }
         />
-        <Route exact path="/not-found" element={<NotFound />} />
+        <Route path="/not-found" element={<NotFound />} />
         (//перенаправление всех других роутов)
         <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Routes>
