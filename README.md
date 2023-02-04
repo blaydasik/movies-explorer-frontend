@@ -39,3 +39,19 @@ Backend https://diplomabyblaydasik.nomoredomains.club
 4. isFailed - произошла или нет ошибка при поиске
 5. isInfoTooltipPopupOpen - отобразить/скрыть попап для отображения ошибок
 6. isSuccess - меняет содержимое попапа в зависимости от результата работы api
+
+IP 84.201.154.67  
+Backend https://diplomabyblaydasik.nomoredomains.club
+
+**Ссылка на макет**
+
+[Макет](https://disk.yandex.ru/d/Qy0fsY4VJyR84w)
+
+## Переменные состояния, изменение которых, позволит проверить верстку в разных состояниях:
+
+1. loggedIn - залогинить/разлогинить пользователя
+2. isLoading - отобразить/скрыть прелоадер
+3. isFound - результат поиска фильмов на роутах /movies и /saved-movies
+4. isFailed - произошла или нет ошибка при поиске
+5. isInfoTooltipPopupOpen - отобразить/скрыть попап для отображения ошибок
+6. isSuccess - меняет содержимое попапа в зависимости от результата работы api

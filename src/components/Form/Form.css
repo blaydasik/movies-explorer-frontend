@@ -165,7 +165,7 @@
 
 @media screen and (max-width: 425px) {
   .form__link-container {
-    grid-gap: 7px;
+    margin-right: 7px;
     font-size: 12px;
     line-height: 1.25;
   }

@@ -121,11 +121,6 @@
   filter: grayscale(1);
 }
 
-.search-form__submit-button:disabled:hover {
-  opacity: 1;
-  cursor: auto;
-}
-
 .search-form__submit-button:hover {
   opacity: 0.8;
   cursor: pointer;
