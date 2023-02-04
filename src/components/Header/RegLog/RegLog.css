@@ -1,0 +1,59 @@
+.reg-log {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.reg-log__link {
+  margin: 8px 0;
+  padding: 0;
+  cursor: pointer;
+  color: #ffffff;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.333;
+  text-decoration: none;
+  display: block;
+}
+
+@media screen and (max-width: 425px) {
+  .reg-log__link {
+    font-size: 10px;
+    line-height: 1.6;
+    margin: 6px 0;
+  }
+}
+
+.reg-log__link:hover {
+  font-weight: 500;
+}
+
+.reg-log__button {
+  margin: 0 0 0 30px;
+  padding: 8px 0;
+  display: block;
+  width: 76px;
+  height: 16px;
+  background-color: #3ddc84;
+  color: #000000;
+  cursor: pointer;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.333;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 3px;
+}
+
+@media screen and (max-width: 425px) {
+  .reg-log__button {
+    font-size: 10px;
+    line-height: 1.6;
+    width: 54px;
+    height: 14px;
+    padding: 6px 0;
+    margin-left: 26px;
+  }
+}

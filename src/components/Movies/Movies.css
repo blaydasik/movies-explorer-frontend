@@ -1,0 +1,31 @@
+.movies-preloader {
+  width: calc(100% - 140px);
+  display: flex;
+  margin: 0 auto;
+  padding: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .movies-preloader {
+    width: calc(100% - 100px);
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .movies-preloader {
+    width: calc(100% - 28px);
+  }
+}
+
+.movies-preloader__not-found {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-width: 320px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 1.214;
+  color: #ffffff;
+  text-align: center;
+}
