@@ -1,9 +1,13 @@
-import './SavedMovies.css'
-import '../Movies/Movies.css'
+import React from "react";
 
-import SearchForm from '../Movies/SearchForm/SearchForm'
-import Preloader from '../Movies/Preloader/Preloader'
-import MoviesCardList from '../Movies/MoviesCardList/MoviesCardList'
+import "./SavedMovies.css";
+import "../Movies/Movies.css";
+
+import SearchForm from "../Movies/SearchForm/SearchForm.jsx";
+import Preloader from "../Movies/Preloader/Preloader.jsx";
+import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList.jsx";
+
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function SavedMovies({
   isLoading,
@@ -13,25 +17,34 @@ function SavedMovies({
   isShortFilms,
   setIsShortFilms,
   handleShortFilms,
+  handleSearchSavedFilm,
   handleDeleteFilm,
-  handleSaveFilm
+  savedCards
 }) {
+    // подпишемся на контекст текущего пользователя
+    const { currentUser } = React.useContext(CurrentUserContext);
 
-  const cardsSaved = cards.filter( (item) => {
-    return item.owner.length > 0;
-  })
+  // отберем movieId карточек данного пользователя
+  const movieIdList = savedCards.map((item) => (item.owner === currentUser._id) ? item.movieId : []);
+  const cardsSaved = cards.filter((item) => movieIdList.indexOf(item.movieId)>=0 );
 
-  const message = isFailed
-    ? 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
-    : !isFound
-    ? 'Ничего не найдено'
-    : ''
+  let message;
+  if (isFailed) {
+    message =
+      "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз";
+  } else if (!isFound) {
+    message = "Ничего не найдено";
+  } else {
+    message = "";
+  }
+
   return (
     <main className="main">
       <SearchForm
         isShortFilms={isShortFilms}
         setIsShortFilms={setIsShortFilms}
         handleShortFilms={handleShortFilms}
+        handleSearchSavedFilm={handleSearchSavedFilm}
       />
       <div className="movies-preloader">
         {isLoading && <Preloader />}
@@ -42,10 +55,10 @@ function SavedMovies({
       <MoviesCardList
         cards={cardsSaved}
         handleDeleteFilm={handleDeleteFilm}
-        handleSaveFilm={handleSaveFilm}
+        savedCards={savedCards}
       />
     </main>
-  )
+  );
 }
 
-export default SavedMovies
+export default SavedMovies;

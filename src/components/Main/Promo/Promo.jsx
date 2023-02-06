@@ -1,5 +1,5 @@
-import './Promo.css'
-import promoImg from '../../../images/promo-img.svg'
+import "./Promo.css";
+import promoImg from "../../../images/promo-img.svg";
 
 function Promo() {
   return (
@@ -22,7 +22,7 @@ function Promo() {
         />
       </div>
     </article>
-  )
+  );
 }
 
-export default Promo
+export default Promo;

@@ -1,12 +1,10 @@
-import './AboutProject.css';
+import "./AboutProject.css";
 
 function AboutProject() {
   return (
     <article className="article about-project" id="about-project">
       <div className="article__container about-project__container">
-        <h2 className="article__header">
-          Супер-пупер секретная информация
-        </h2>
+        <h2 className="article__header">Супер-пупер секретная информация</h2>
 
         <section className="about-project__describe-container">
           <h2 className="about-project__describe-header">
@@ -35,7 +33,7 @@ function AboutProject() {
         </section>
       </div>
     </article>
-  )
+  );
 }
 
 export default AboutProject;

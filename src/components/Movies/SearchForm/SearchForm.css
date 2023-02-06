@@ -96,15 +96,19 @@
 }
 
 .search-form__error {
-  margin: 0;
+  margin: 2px 0;
   padding: 0;
   width: 100%;
   font-style: normal;
   font-weight: 400;
   font-size: 13px;
   line-height: 1;
-  color: #ff004d;
+  color: transparent;
   min-height: 13px;
+}
+
+.search-form__input:focus + .search-form__error {
+  color: #ff004d;
 }
 
 .search-form__submit-button {
@@ -112,8 +116,8 @@
   padding: 0;
   width: 34px;
   height: 34px;
-  background-image: url('../../../images/button-search-film.svg');
-  background-size: contain;
+  background-image: url("../../../images/button-search-film.svg");
+  background-size: cover;
   border: none;
   border-radius: 48px;
   transition: 0.5s ease;
@@ -137,7 +141,7 @@
   margin: 0 auto 0 0;
   padding: 0;
   display: inline-grid;
-  grid-template-areas: 'left right';
+  grid-template-areas: "left right";
 }
 
 .search-form__slider {
@@ -173,7 +177,7 @@
 }
 
 .search-form__slider:before {
-  content: '';
+  content: "";
   position: absolute;
   width: 16px;
   height: 16px;

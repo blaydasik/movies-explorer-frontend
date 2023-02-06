@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "airbnb-base",
+    "prettier"
+  ],
+  "parserOptions": {"ecmaFeatures": {"jsx": true}},  
+  "rules": {
+    "no-console": ["error", { "allow": ["log"] }],
+    "import/no-unresolved": ["error", { "commonjs": true }],
+    "import/extensions": ["error", { "js": ["always"] }],
+    "no-underscore-dangle": ["error", { "allow": ["_id", "_request", "_validateAnswer"] }],
+    "no-unused-vars": "off",
+    "no-param-reassign" :"off",
+  }
+}

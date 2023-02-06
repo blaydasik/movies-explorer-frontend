@@ -1,53 +1,51 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import classnames from 'classnames'
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import classnames from "classnames";
 
-import './Header.css'
+import "./Header.css";
 
-import { CurrentUserContext } from '../../contexts/CurrentUserContext'
-import Navigation from './Navigation/Navigation'
-import Account from './Account/Account'
-import RegLog from './RegLog/RegLog'
-import SideMenu from './SideMenu/SideMenu'
+import CurrentUserContext from "../../contexts/CurrentUserContext";
+import Navigation from "./Navigation/Navigation.jsx";
+import Account from "./Account/Account.jsx";
+import RegLog from "./RegLog/RegLog.jsx";
+import SideMenu from "./SideMenu/SideMenu.jsx";
 
 function Header({ onSignOut }) {
-  //подпишемся на контекст
-  const loggedIn = React.useContext(CurrentUserContext).loggedIn
-  const [isMenuDisplayed, setIsMenuDisplayed] = useState(false)
+  // подпишемся на контекст
+  const { loggedIn } = React.useContext(CurrentUserContext);
+  const [isMenuDisplayed, setIsMenuDisplayed] = useState(false);
 
-  //обработчик открытия бокового меню
+  // обработчик открытия бокового меню
   function handleBurgerButtonClick() {
-    setIsMenuDisplayed(!isMenuDisplayed)
+    setIsMenuDisplayed(!isMenuDisplayed);
   }
 
-  const location = useLocation()
-  //определим, находимся ли мы на странице регистрации или входа
+  const location = useLocation();
+  // определим, находимся ли мы на странице регистрации или входа
   const isSignInSignUp =
-    location.pathname === '/signin' || location.pathname === '/signup'
-  const isNotFound = location.pathname === '/not-found'
-  const isMainPage = location.pathname === '/'
-  const classNameHeader = classnames('header', {
-    'header_main-page': isMainPage,
-    'header_space-between': !loggedIn,
+    location.pathname === "/signin" || location.pathname === "/signup";
+  const isNotFound = location.pathname === "/not-found";
+  const isMainPage = location.pathname === "/";
+  const classNameHeader = classnames("header", {
+    "header_main-page": isMainPage,
+    "header_space-between": !loggedIn,
     header_inactive: isNotFound,
-  })
-  const classNameLogo = classnames('header__logo', {
+  });
+  const classNameLogo = classnames("header__logo", {
     header__logo_centered: isSignInSignUp,
-  })
-  const classNameNavigation = classnames('header__navigation', {
+  });
+  const classNameNavigation = classnames("header__navigation", {
     header__navigation_active: loggedIn && !isSignInSignUp,
-  })
-  const classNameRegLog = classnames('header__reg-log', {
-    'header__reg-log_inactive': loggedIn || isSignInSignUp,
-  })
-  const classNameAccount = classnames('header__account', {
+  });
+  const classNameRegLog = classnames("header__reg-log", {
+    "header__reg-log_inactive": loggedIn || isSignInSignUp,
+  });
+  const classNameAccount = classnames("header__account", {
     header__account_inactive: !loggedIn || isSignInSignUp,
-  })
-  const classNameBurger = classnames('header__button-burger', {
-    'header__button-burger_inactive': !loggedIn || isSignInSignUp,
-  })
+  });
+  const classNameBurger = classnames("header__button-burger", {
+    "header__button-burger_inactive": !loggedIn || isSignInSignUp,
+  });
 
   return (
     <header className={classNameHeader}>
@@ -76,7 +74,7 @@ function Header({ onSignOut }) {
         onSignOut={onSignOut}
       />
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;

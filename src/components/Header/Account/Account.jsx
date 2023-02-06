@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 
-import './Account.css'
+import "./Account.css";
 
 function Account({ onSignOut }) {
   return (
@@ -14,7 +14,7 @@ function Account({ onSignOut }) {
         <button className="account__button-exit" onClick={onSignOut} />
       </li>
     </ul>
-  )
+  );
 }
 
-export default Account
+export default Account;

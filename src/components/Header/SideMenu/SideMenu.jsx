@@ -1,15 +1,15 @@
-import classnames from 'classnames'
+import classnames from "classnames";
 
-import './SideMenu.css'
+import "./SideMenu.css";
 
-import Navigation from '../Navigation/Navigation'
-import Account from '../Account/Account'
+import Navigation from "../Navigation/Navigation.jsx";
+import Account from "../Account/Account.jsx";
 
 function SideMenu({ isMenuDisplayed, buttonClick, onSignOut }) {
-  const classNameSideMenu = classnames('side-menu', {
-    'side-menu_opened': isMenuDisplayed,
-  })
-  const classNameSideMenuContainer = classnames('side-menu__container')
+  const classNameSideMenu = classnames("side-menu", {
+    "side-menu_opened": isMenuDisplayed,
+  });
+  const classNameSideMenuContainer = classnames("side-menu__container");
 
   return (
     <section className={classNameSideMenu}>
@@ -20,11 +20,11 @@ function SideMenu({ isMenuDisplayed, buttonClick, onSignOut }) {
             isMenuDisplayed={isMenuDisplayed}
             buttonClick={buttonClick}
           />
-          <Account onSignOut={onSignOut}/>
+          <Account onSignOut={onSignOut} />
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-export default SideMenu
+export default SideMenu;

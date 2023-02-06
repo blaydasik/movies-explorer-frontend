@@ -64,9 +64,9 @@
   grid-template-columns: auto 1fr auto;
   grid-template-rows: 56px 0 0;
   grid-template-areas:
-    'left . right'
-    '. top .'
-    '. bottom .';
+    "left . right"
+    ". top ."
+    ". bottom .";
 }
 
 @media screen and (max-width: 1024px) {

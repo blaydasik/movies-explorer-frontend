@@ -1,6 +1,6 @@
-import './AboutMe.css'
+import "./AboutMe.css";
 
-import profilePhoto from '../../../images/profile-photo.jpg'
+import profilePhoto from "../../../images/profile-photo.jpg";
 
 function AboutMe() {
   return (
@@ -33,7 +33,7 @@ function AboutMe() {
         </div>
       </div>
     </article>
-  )
+  );
 }
 
-export default AboutMe
+export default AboutMe;
