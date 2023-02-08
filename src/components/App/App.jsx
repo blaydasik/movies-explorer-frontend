@@ -213,17 +213,22 @@ function App() {
 
   //  обработчик регистрации нового пользователя
   function handleSubmitRegistration(userData) {
-    auth
-      .register(userData)
-      .then((data) => {
-        setIsSucess(true);
+    auth.register(userData)    
+      .then(() => {
         setMessage("Вы успешно зарегистрировались!");
-        navigate("/movies");
-        setLoggedIn(true);
+        setIsSucess(true);
         setIsInfoTooltipPopupOpen(true);
+        auth.login({email: userData.email, password: userData.password})
+          .then((authData) => {
+            if (authData.token) {
+              setLoggedIn(true);
+              navigate("/movies");
+            }
+          })
       })
       .catch((err) => {
         setCommonError(err.message);
+        setLoggedIn(false);
       });
   }
 
@@ -232,15 +237,13 @@ function App() {
     auth
       .login(userData)
       .then((data) => {
-        console.log(data);
         // проверим, что токен получен
         if (data.token) {
-          console.log("token");
-          setIsSucess(true);
           setMessage("Вы успешно авторизовались!");
-          navigate("/movies");
-          setLoggedIn(true);
+          setIsSucess(true);
           setIsInfoTooltipPopupOpen(true);
+          setLoggedIn(true);
+          navigate("/movies");
         }
       })
       .catch((err) => {
@@ -253,10 +256,9 @@ function App() {
     auth
       .logout()
       .then((answer) => {
-        console.log(answer.message);
-        setIsSucess(true);
         setMessage(answer.message);
-
+        setIsSucess(true);        
+        setIsInfoTooltipPopupOpen(true);
         setLoggedIn(false);
         setCurrentUser({});
       })
@@ -276,12 +278,12 @@ function App() {
           // авторизуем пользователя
           setCurrentUser(userData);
           setLoggedIn(true);
-          console.log(`чекаем куку ${userData.statusCode}`)
           // при успешной авторизации переходим на страницу фильмов
           navigate("/movies");
         }
       })
       .catch((err) => {
+        console.log(`err=${err}`)
         setLoggedIn(false);
         setCommonError(err.message);
       });
@@ -305,7 +307,7 @@ function App() {
       setIsFound(true);
       setIsButtonMoreDispayed(
         shortFilteredCards.length >
-          shortFilteredCards.slice(0, cardsNumber).length
+        shortFilteredCards.slice(0, cardsNumber).length
       );
     } else {
       setIsButtonMoreDispayed(false);

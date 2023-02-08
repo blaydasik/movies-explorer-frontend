@@ -80,6 +80,8 @@ export function filterCardsByShorts(cards, isShorts) {
   });
 }
 
-export const regExpName = "[а-яА-ЯёЁa-zA-Z -]+";
+// регулярка для валидации поля имя
+export const nameRegex = "[а-яА-ЯёЁa-zA-Z -]+";
 
-export const regExpEmail = "[-\\w.]+@([A-z0-9][-A-z0-9]+\\.)+[A-z]{2,4}";
+// регулярка для валидации email
+export const emailRegex = "[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\\.[A-Za-z]{2,4}";

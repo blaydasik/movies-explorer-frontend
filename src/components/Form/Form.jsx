@@ -5,7 +5,7 @@ import "./Form.css";
 
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import useFormAndValidation from "../../hooks/useForm";
-import { formTextRegister, formTextLogin, regExpName, regExpEmail } from "../../utils/constants";
+import { formTextRegister, formTextLogin, nameRegex, emailRegex } from "../../utils/constants";
 
 function Form({ handleSubmit }) {
   // подпишемся на контекст текущего пользователя
@@ -44,7 +44,7 @@ function Form({ handleSubmit }) {
                 onChange={handleChange}
                 placeholder="как звать"
                 required
-                pattern={regExpName}
+                pattern={nameRegex}
               ></input>
               <span className="form__error">{errors.name || ""}</span>
             </label>
@@ -60,7 +60,7 @@ function Form({ handleSubmit }) {
               onChange={handleChange}
               placeholder="куда письма слать"
               required
-              pattern={regExpEmail}
+              pattern={emailRegex}
             ></input>
             <span className="form__error">{errors.email || ""}</span>
           </label>
@@ -71,8 +71,8 @@ function Form({ handleSubmit }) {
               id="password"
               name="password"
               type="password"
-              minLength="3"
-              maxLength="10"
+              minLength="6"
+              maxLength="15"
               value={values.password || ""}
               onChange={handleChange}
               placeholder="как проверить"

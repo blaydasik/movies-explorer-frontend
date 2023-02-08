@@ -1,24 +1,16 @@
 import { mainApiSettings } from "./constants.js";
 
-/* // метод проверки ответа сервера
+// метод проверки ответа сервера
 function validateAnswer(res) {
   return res.json().then((data) => {
-    if (res.ok) {
+    // дополнительно проверим, что кука есть в хранилище
+    // ответ сервера с кодом 203 говорит об ее отсутствии
+    if (res.ok && res.status !== 203) {
       return data;
     }
     return Promise.reject(new Error(data.message));
   });
-} */
-// метод проверки ответа сервера
-function validateAnswer(res) {
-  if (res.ok) {
-    return res.json();
-  } 
-    return Promise.reject(res.message);
-
 }
-
-
 
 // универсальный метод запроса с проверкой ответа
 function request(url, options) {
