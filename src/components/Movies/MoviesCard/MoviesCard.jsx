@@ -19,8 +19,7 @@ function MoviesCard({ card, handleDeleteFilm, handleSaveFilm, savedCards }) {
   const [isSaved, setIsSave] = useState(false);
 
   React.useEffect(() => {
-    console.log(loggedIn);
-    if (loggedIn) {
+      if (loggedIn) {
       savedCards.forEach((item) => {
         if (item.owner === currentUser._id && item.movieId === card.movieId) {
           setIsSave(true);

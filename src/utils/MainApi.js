@@ -12,15 +12,10 @@ class MainApi {
     return fetch(url, { ...options, ...this.options }).then(validateAnswer);
   }
 
-  // публичный метод, получающий информацию о пользователе с сервера
-  downloadUserInfo() {
-    return this._request(`${this.link}/users/me`, {});
-  }
-
   // публичный метод, загружающий карточки с сервера
   downloadMovieCards() {
     return this._request(`${this.link}/movies`, {
-      method: "GET"
+      method: "GET",
     });
   }
 

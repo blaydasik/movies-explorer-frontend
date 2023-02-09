@@ -110,7 +110,7 @@ function App() {
         })
         .catch((err) => {
           setMessage(
-            `Ушипка при загрузке сохраненных карточек с сервера: ${err}`
+            `Ушипка при загрузке сохраненных карточек с сервера: ${err.message}`
           );
           setIsInfoTooltipPopupOpen(true);
         });
@@ -127,6 +127,7 @@ function App() {
       } else {
         setIsButtonMoreDispayed(false);
       }
+      setCommonError("");
     }
   }, [location]);
 
@@ -176,7 +177,9 @@ function App() {
           );
         })
         .catch((err) => {
-          setMessage(`Ушипка при попытке удалить карточку с сервера: ${err}`);
+          setMessage(
+            `Ушипка при попытке удалить карточку с сервера: ${err.message}`
+          );
           setIsInfoTooltipPopupOpen(true);
         });
     });
@@ -190,50 +193,76 @@ function App() {
         // обновим массив карточек
         setSavedCards(
           savedCards.map((item) => {
+            const itemUpdated = item;
             if (item.movieId === newCard.movieId) {
-              item.owner = newCard.owner;
+              itemUpdated.owner = newCard.owner;
             }
-            return item;
+            return itemUpdated;
           })
         );
       })
       .catch((err) => {
-        setMessage(`Ушипка при попытке сохранить карточку на сервер: ${err}`);
+        setMessage(
+          `Ушипка при попытке сохранить карточку на сервер: ${err.message}`
+        );
         setIsInfoTooltipPopupOpen(true);
       });
   }
 
   //  обработчик сабмита профиля
-  function handleSubmitProfile(setIsSubmitButton, setIsDisabled, values) {
-    setCurrentUser(values);
-    setCommonError("При обновлении профиля произошла ошибка.");
-    setIsSubmitButton(false);
-    setIsDisabled(true);
+  function handleSubmitProfile(setIsSubmitButton, setIsDisabled, userData) {
+    setCommonError("");
+    workingApi
+      .setNewUserInfo({ name: userData.name, email: userData.email })
+      .then((updateData) => {
+        setMessage("Данные профиля успешно обновлены!");
+        setIsSucess(true);
+        setIsInfoTooltipPopupOpen(true);
+        setCurrentUser(updateData);
+        setIsSubmitButton(false);
+        setIsDisabled(true);
+      })
+      .catch((err) => {
+        if (err === 409) {
+          setCommonError("Пользователь с таким email уже существует! :-(");
+        } else {
+          setCommonError("При обновлении профиля произошла ошибка.");
+        }
+        setCurrentUser(currentUser);
+      });
   }
 
   //  обработчик регистрации нового пользователя
   function handleSubmitRegistration(userData) {
-    auth.register(userData)    
+    setCommonError("");
+    auth
+      .register(userData)
       .then(() => {
         setMessage("Вы успешно зарегистрировались!");
         setIsSucess(true);
         setIsInfoTooltipPopupOpen(true);
-        auth.login({email: userData.email, password: userData.password})
+        auth
+          .login({ email: userData.email, password: userData.password })
           .then((authData) => {
-            if (authData.token) {
+              if (authData.token) {
               setLoggedIn(true);
               navigate("/movies");
             }
-          })
+          });
       })
       .catch((err) => {
-        setCommonError(err.message);
+        const errMessage =
+          err.message === "Validation failed"
+            ? "При регистрации пользователя произошла ошибка."
+            : err.message;
+        setCommonError(errMessage);
         setLoggedIn(false);
       });
   }
 
   //  обработчик логина
   function handleSubmitLogin(userData) {
+    setCommonError("");
     auth
       .login(userData)
       .then((data) => {
@@ -241,13 +270,18 @@ function App() {
         if (data.token) {
           setMessage("Вы успешно авторизовались!");
           setIsSucess(true);
-          setIsInfoTooltipPopupOpen(true);
           setLoggedIn(true);
+          setIsInfoTooltipPopupOpen(true);
           navigate("/movies");
         }
       })
       .catch((err) => {
-        setCommonError(err.message);
+        const errMessage =
+          err.message === "Validation failed"
+            ? "При логине произошла ошибка."
+            : err.message;
+        setCommonError(errMessage);
+        setLoggedIn(false);
       });
   }
 
@@ -257,14 +291,15 @@ function App() {
       .logout()
       .then((answer) => {
         setMessage(answer.message);
-        setIsSucess(true);        
+        setIsSucess(true);
         setIsInfoTooltipPopupOpen(true);
         setLoggedIn(false);
         setCurrentUser({});
+        localStorage.clear();
       })
       .catch((err) => {
         setIsSucess(false);
-        setMessage("Что-то пошло не так! Попробуйте ещё раз.");
+        setMessage(`Что-то пошло не так: ${err.message}`);
         setIsInfoTooltipPopupOpen(true);
       });
   }
@@ -283,9 +318,11 @@ function App() {
         }
       })
       .catch((err) => {
-        console.log(`err=${err}`)
+        if (err.message !== "Отсутствует кука :-(") {
+          setMessage(err.message);
+          setIsInfoTooltipPopupOpen(true);
+        }
         setLoggedIn(false);
-        setCommonError(err.message);
       });
   }, [loggedIn]);
 
@@ -307,7 +344,7 @@ function App() {
       setIsFound(true);
       setIsButtonMoreDispayed(
         shortFilteredCards.length >
-        shortFilteredCards.slice(0, cardsNumber).length
+          shortFilteredCards.slice(0, cardsNumber).length
       );
     } else {
       setIsButtonMoreDispayed(false);
@@ -385,6 +422,24 @@ function App() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  // навешивание обработчика на нажатие клавиши Escape
+  useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === "Escape") {
+        setIsInfoTooltipPopupOpen(false);
+      }
+    }
+    if (isInfoTooltipPopupOpen) {
+      // навешиваем только при открытии
+      document.addEventListener("keydown", closeByEscape);
+      // удаляем при закрытии
+      return () => {
+        document.removeEventListener("keydown", closeByEscape);
+      };
+    }
+    return () => {};
+  }, [isInfoTooltipPopupOpen]); // отслеживаем открытия и закрытия попапа
 
   return (
     <CurrentUserContext.Provider value={{ currentUser, loggedIn, commonError }}>

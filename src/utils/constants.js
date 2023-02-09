@@ -34,7 +34,7 @@ export const apiSettings = {
 
 // параметры для запросов к серверу beat films
 export const mainApiSettings = {
-  link: "http://localhost:3001",
+  link: "https://api.diplomabyblaydasik.nomoredomains.club",
   options: {
     headers: {
       "Content-Type": "application/json",

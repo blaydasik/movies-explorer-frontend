@@ -5,13 +5,26 @@ import "./Form.css";
 
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import useFormAndValidation from "../../hooks/useForm";
-import { formTextRegister, formTextLogin, nameRegex, emailRegex } from "../../utils/constants";
+import {
+  formTextRegister,
+  formTextLogin,
+  nameRegex,
+  emailRegex,
+} from "../../utils/constants";
 
 function Form({ handleSubmit }) {
   // подпишемся на контекст текущего пользователя
   const { commonError } = React.useContext(CurrentUserContext);
   // подключим хук для валидации формы
-  const { values, handleChange, errors, isValid, setIsValid } = useFormAndValidation();
+  const {
+    values,
+    handleChange,
+    errors,
+    isValid,
+    setIsValid,
+    isCommonState,
+    setIsCommonState,
+  } = useFormAndValidation();
 
   const location = useLocation();
   // определим, находимся ли мы на странице регистрации или входа
@@ -20,6 +33,7 @@ function Form({ handleSubmit }) {
 
   function handleButtonClick(evt) {
     evt.preventDefault();
+    setIsCommonState(true);
     // блокировка от повторной отправки
     setIsValid(false);
     handleSubmit(values);
@@ -80,7 +94,9 @@ function Form({ handleSubmit }) {
             ></input>
             <span className="form__error">{errors.password || ""}</span>
           </label>
-          <span className="form__error">{commonError}</span>
+          <span className="form__error">
+            {isCommonState ? commonError : ""}
+          </span>
           <button
             className="form__button-submit"
             id="form-submit"

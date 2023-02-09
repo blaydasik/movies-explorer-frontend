@@ -7,6 +7,8 @@ function useFormAndValidation() {
   const [errors, setErrors] = useState({});
   // переменная отвечающая за валидность инпутов
   const [isValid, setIsValid] = useState(false);
+  // стэйт переменная, определяющая отображение commonError
+  const [isCommonState, setIsCommonState] = useState(false);
 
   // обработчик на ввод в инпуты
   const handleChange = (evt) => {
@@ -17,6 +19,8 @@ function useFormAndValidation() {
     setErrors({ ...errors, [name]: evt.target.validationMessage });
     // определяем валидность инпутов
     setIsValid(evt.target.closest("form").checkValidity());
+    // убираем отображение общей ушипки
+    setIsCommonState(false);
   };
 
   // функция для сброса формы: инпутов и ошибок
@@ -37,6 +41,8 @@ function useFormAndValidation() {
     isValid,
     setIsValid,
     resetForm,
+    isCommonState,
+    setIsCommonState
   };
 }
 
