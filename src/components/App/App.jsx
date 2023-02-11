@@ -106,12 +106,16 @@ function App() {
 
       // установим данные из локального хранилища для роута movies
       if (isLocationMovies) {
-        setIsFound(
-          filterCardsByShorts(
-            moviesFromLocalStorage,
-            isShortFilmsFromLocalStorage
-          ).length > 0
-        );
+        if (isFirstSearch) {
+          setIsFound(true);
+        } else {
+          setIsFound(
+            filterCardsByShorts(
+              moviesFromLocalStorage,
+              isShortFilmsFromLocalStorage
+            ).length > 0
+          );
+        }
         setIsShortFilms(isShortFilmsFromLocalStorage);
         setCardsForDisplay(() =>
           textForSearchFromLocalStorage
