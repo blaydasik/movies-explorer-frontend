@@ -1,4 +1,6 @@
+import React from "react";
 import "./Promo.css";
+
 import promoImg from "../../../images/promo-img.svg";
 
 function Promo() {

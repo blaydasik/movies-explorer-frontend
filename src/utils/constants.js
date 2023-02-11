@@ -34,7 +34,8 @@ export const apiSettings = {
 
 // параметры для запросов к серверу beat films
 export const mainApiSettings = {
-  link: "https://api.diplomabyblaydasik.nomoredomains.club",
+  /*   link: "https://api.diplomabyblaydasik.nomoredomains.club", */
+  link: "http://localhost:3002",
   options: {
     headers: {
       "Content-Type": "application/json",
@@ -68,16 +69,35 @@ export function filterCardsByString(cards, searchString) {
     return result;
   });
 }
+// продолжительность короткометражного
+const shortMovieDuration = 40;
 
 // функция, фильтрующая карточки по короткометражности
 export function filterCardsByShorts(cards, isShorts) {
   return cards.filter((item) => {
     let result = true;
-    if (item.duration > 40 && isShorts) {
+    if (item.duration > shortMovieDuration && isShorts) {
       result = false;
     }
     return result;
   });
+}
+
+// точки перестроения карточек на экране
+const widthScreen = {
+  wide: 1217,
+  medium: 690,
+};
+
+// функция, определяющая количество карточек для отображения
+export function amountCardsToView(width) {
+  if (width > widthScreen.wide) {
+    return { cards: 12, more: 3 };
+  }
+  if (width > widthScreen.medium) {
+    return { cards: 8, more: 2 };
+  }
+  return { cards: 5, more: 2 };
 }
 
 // регулярка для валидации поля имя

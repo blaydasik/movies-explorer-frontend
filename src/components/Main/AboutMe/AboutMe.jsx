@@ -1,3 +1,5 @@
+import React from "react";
+
 import "./AboutMe.css";
 
 import profilePhoto from "../../../images/profile-photo.jpg";

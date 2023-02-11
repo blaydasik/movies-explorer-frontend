@@ -1,9 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import "./SearchForm.css";
-
-import useFormAndValidation from "../../../hooks/useForm";
 
 function SearchForm({
   isShortFilms,
@@ -11,40 +9,44 @@ function SearchForm({
   handleShortFilms,
   handleSearchFilm,
   handleSearchSavedFilm,
-  textForSearch,
+  savedTextForSearch,
 }) {
   const location = useLocation();
   const isSavedFilms = location.pathname === "/saved-movies";
-  // подключим хук для валидации формы
-  const { values, handleChange, errors, isValid } =
-    useFormAndValidation();
+  // стэйт переменные инпута и ошибки
+  const [searchText, setSearchText] = useState("");
+  const [searchError, setSearchError] = useState("");
 
-  const errorMessage =
-    values.film === undefined || values.film === ""
-      ? "Нужно ввести ключевое слово"
-      : errors.film || "";
+  // состояние кнопки поиска
+  const [isButtonDisabled, setIsButtonDisabled] = useState(savedTextForSearch);
 
   function handleSliderChange() {
-    setIsShortFilms(!isShortFilms);
-    if (isSavedFilms) {
-      handleSearchSavedFilm();
-    } else {
-      handleShortFilms();
-    }
+    setIsShortFilms((state) => !state);
+    handleShortFilms();
   }
 
   function handleSubmitButton(evt) {
     evt.preventDefault();
-    if (isSavedFilms) {
-      handleSearchSavedFilm(values.film);
+    // провалидируем форму
+    if (searchText === undefined || searchText === "") {
+      setIsButtonDisabled(true);
+      setSearchError("Нужно ввести ключевое слово");
+    } else if (isSavedFilms) {
+      handleSearchSavedFilm(searchText);
     } else {
-      handleSearchFilm(values.film);
+      handleSearchFilm(searchText);
     }
+  }
+
+  function handleSearchChange(evt) {
+    setSearchError("");
+    setSearchText(evt.target.value);
+    setIsButtonDisabled(false);
   }
 
   return (
     <article className="article">
-      <form className="search-form" onSubmit={handleSubmitButton}>
+      <form className="search-form" onSubmit={handleSubmitButton} noValidate>
         <fieldset className="search-form__fieldset-film">
           <label className="search-form__label-film">
             <input
@@ -54,17 +56,17 @@ function SearchForm({
               type="text"
               name="film"
               minLength="2"
-              maxLength="30"
-              defaultValue={textForSearch || ""}
-              values={values.film || ""}
-              onChange={handleChange}
-              required
+              defaultValue={savedTextForSearch || ""}
+              values={searchText}
+              onChange={handleSearchChange}
             />
-            <span className="search-form__error">{errorMessage}</span>
+            <span className="search-form__error">{searchError}</span>
           </label>
           <button
             className="search-form__submit-button"
-            disabled={isValid ? "" : "disabled"}
+            id="form-submit"
+            type="submit"
+            disabled={isButtonDisabled ? "disabled" : ""}
           ></button>
         </fieldset>
         <fieldset className="search-form__fieldset-slider">

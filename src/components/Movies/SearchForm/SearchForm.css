@@ -103,12 +103,8 @@
   font-weight: 400;
   font-size: 13px;
   line-height: 1;
-  color: transparent;
-  min-height: 13px;
-}
-
-.search-form__input:focus + .search-form__error {
   color: #ff004d;
+  min-height: 13px;
 }
 
 .search-form__submit-button {

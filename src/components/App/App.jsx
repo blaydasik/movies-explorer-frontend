@@ -11,6 +11,7 @@ import {
 import "./App.css";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import Main from "../Main/Main.jsx";
+
 import Header from "../Header/Header.jsx";
 import Footer from "../Footer/Footer.jsx";
 import {
@@ -34,6 +35,7 @@ import * as auth from "../../utils/auth";
 import {
   filterCardsByString,
   filterCardsByShorts,
+  amountCardsToView,
 } from "../../utils/constants";
 
 function App() {
@@ -41,32 +43,26 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   // проверим локальное хранилище
   const moviesFromLocalStorage =
-    JSON.parse(localStorage.getItem("shortFilteredCards")) || [];
+    JSON.parse(localStorage.getItem("filteredCards")) || [];
   const textForSearchFromLocalStorage =
     localStorage.getItem("textForSearch") || false;
   const isShortFilmsFromLocalStorage =
     JSON.parse(localStorage.getItem("isShortFilms")) || false;
-  const isFoundFromLocalStorage =
-    JSON.parse(localStorage.getItem("isFound")) || true;
   // залогинен пользователь или нет
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   // общая ушипка
   const [commonError, setCommonError] = useState("");
   // слайдер короткометражек
-  const [isShortFilms, setIsShortFilms] = useState(
-    textForSearchFromLocalStorage ? isShortFilmsFromLocalStorage : false
-  );
+  const [isShortFilms, setIsShortFilms] = useState(false);
   // происходит ли поиск фильмов (отображает прелоадер)
   const [isLoading, setIsLoading] = useState(false);
   // если в результате поиска фильмов ничего не найдено
-  const [isFound, setIsFound] = useState(
-    textForSearchFromLocalStorage ? isFoundFromLocalStorage : true
-  );
+  const [isFound, setIsFound] = useState(true);
   // если в процессе поиска возникла ушипка
   const [isFailed, setIsFailed] = useState(false);
   // отслеживаем ширниу экрана
   const [width, setWidth] = useState(window.innerWidth);
-  // состояние popup с ошибкой api
+  // состояние popup с ошибкой apiscreenWidth
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
   // определяет успешно ли отработало api
   const [isSuccess, setIsSucess] = useState(false);
@@ -79,26 +75,18 @@ function App() {
   const [isButtonMoreDispayed, setIsButtonMoreDispayed] = useState(false);
   // массив отображаемых карточек
   const [cardsForDisplay, setCardsForDisplay] = useState([]);
-  // отфильтрованные короткометражки
+  // отфильтрованные по условиям поиска
   const [cardsFiltered, setCardsFiltered] = useState(moviesFromLocalStorage);
   // сохраненные данным пользователем карточки
   const [savedCards, setSavedCards] = useState([]);
-  // массив отображаемых сохраненных карточек
+  // отфильтрованные по условиям поиска сохраненные данным пользователем карточки
+  const [savedCardsFiltered, setSavedCardsFiltered] = useState([]);
+  // массив отображаемых сохраненных карточек c учетом условий фильтрации
   const [savedCardsForDisplay, setSavedCardsForDisplay] = useState([]);
-
-  // определим количество выводимых карточек
-  let cardsNumber;
-  if (width > 1217) {
-    cardsNumber = 12;
-  } else if (width > 690) {
-    cardsNumber = 8;
-  } else {
-    cardsNumber = 5;
-  }
-  const cardsMore = width > 1217 ? 3 : 2;
 
   const navigate = useNavigate();
   const location = useLocation();
+  const isLocationMovies = location.pathname === "/movies";
 
   React.useEffect(() => {
     if (loggedIn) {
@@ -106,6 +94,7 @@ function App() {
         .downloadMovieCards()
         .then((cardsData) => {
           setSavedCards(cardsData);
+          setSavedCardsFiltered(cardsData);
           setSavedCardsForDisplay(cardsData);
         })
         .catch((err) => {
@@ -115,17 +104,31 @@ function App() {
           setIsInfoTooltipPopupOpen(true);
         });
 
-      setCardsForDisplay(() =>
-        textForSearchFromLocalStorage
-          ? moviesFromLocalStorage.slice(0, cardsNumber)
-          : []
-      );
-      setIsFound(isFoundFromLocalStorage);
-      setIsShortFilms(isShortFilmsFromLocalStorage);
-      if (moviesFromLocalStorage.length > cardsNumber) {
-        setIsButtonMoreDispayed(true);
+      // установим данные из локального хранилища для роута movies
+      if (isLocationMovies) {
+        setIsFound(
+          filterCardsByShorts(
+            moviesFromLocalStorage,
+            isShortFilmsFromLocalStorage
+          ).length > 0
+        );
+        setIsShortFilms(isShortFilmsFromLocalStorage);
+        setCardsForDisplay(() =>
+          textForSearchFromLocalStorage
+            ? filterCardsByShorts(
+                moviesFromLocalStorage,
+                isShortFilmsFromLocalStorage
+              ).slice(0, amountCardsToView(width).cards)
+            : []
+        );
+        if (moviesFromLocalStorage.length > amountCardsToView(width).cards) {
+          setIsButtonMoreDispayed(true);
+        } else {
+          setIsButtonMoreDispayed(false);
+        }
       } else {
-        setIsButtonMoreDispayed(false);
+        setIsShortFilms(false);
+        setIsFound(savedCards.length > 0);
       }
       setCommonError("");
     }
@@ -133,7 +136,7 @@ function App() {
 
   // обработчик нажатия на кнопку еще
   function handleButtonMoreClick() {
-    const cardsAmount = cardsForDisplay.length + cardsMore;
+    const cardsAmount = cardsForDisplay.length + amountCardsToView(width).more;
     const cardsResult = filterCardsByShorts(cardsFiltered, isShortFilms);
     if (cardsResult.length > cardsForDisplay.length) {
       setCardsForDisplay(cardsResult.slice(0, cardsAmount));
@@ -145,91 +148,102 @@ function App() {
 
   // обработчик нажатия на кнопку короткометражек
   function handleShortFilms() {
-    const cardsResult = filterCardsByShorts(cardsFiltered, !isShortFilms);
-    setCardsForDisplay(cardsResult.slice(0, cardsNumber));
-    if (cardsResult.length > 0) {
-      setIsButtonMoreDispayed(
-        cardsResult.length > cardsResult.slice(0, cardsNumber).length
+    console.log(isLocationMovies);
+    if (isLocationMovies) {
+      const cardsResult = filterCardsByShorts(cardsFiltered, !isShortFilms);
+      setCardsForDisplay(cardsResult.slice(0, amountCardsToView(width).cards));
+      if (cardsResult.length > 0) {
+        setIsButtonMoreDispayed(
+          cardsResult.length >
+            cardsResult.slice(0, amountCardsToView(width).cards).length
+        );
+        setIsFound(true);
+      } else {
+        setIsButtonMoreDispayed(false);
+        setIsFound(false);
+      }
+      localStorage.setItem("isShortFilms", !isShortFilms);
+      localStorage.setItem("isFound", isFound);
+    } else {
+      const shortFilteredCards = filterCardsByShorts(
+        savedCardsFiltered,
+        !isShortFilms
       );
+      setSavedCardsForDisplay(shortFilteredCards);
+      setIsFound(shortFilteredCards.length > 0);
+    }
+  }
+
+  // функция фильтрации фильмов
+  function chooseFilms(cardsFilms, textForSearch) {
+    // отфильтрованные по поиску карточки
+    const filteredCards = filterCardsByString(cardsFilms, textForSearch);
+    setCardsFiltered(filteredCards);
+    // отфильтрованные карточки с учетом положения слайдера
+    const shortFilteredCards = filterCardsByShorts(filteredCards, isShortFilms);
+    setCardsForDisplay(
+      shortFilteredCards.slice(0, amountCardsToView(width).cards)
+    );
+    if (shortFilteredCards.length > 0) {
       setIsFound(true);
+      setIsButtonMoreDispayed(
+        shortFilteredCards.length >
+          shortFilteredCards.slice(0, amountCardsToView(width).cards).length
+      );
     } else {
       setIsButtonMoreDispayed(false);
       setIsFound(false);
     }
+    // сохраним результат в хранилище
+    localStorage.setItem("textForSearch", textForSearch);
+    localStorage.setItem("filteredCards", JSON.stringify(filteredCards));
+    localStorage.setItem("isShortFilms", isShortFilms);
   }
 
-  // обработчик удаления фильма
-  function handleDeleteFilm(cardForDelete) {
-    const cardToDelete = savedCards.filter(
-      (item) =>
-        item.movieId === cardForDelete.movieId && item.owner === currentUser._id
-    );
-    cardToDelete.forEach((element) => {
-      workingApi
-        .deleteMovieCard(element._id)
-        .then(() => {
-          // обновим массив карточек
-          setSavedCards((state) =>
-            state.filter((item) => item.movieId !== element.movieId)
-          );
-          setSavedCardsForDisplay((state) =>
-            state.filter((item) => item.movieId !== element.movieId)
-          );
+  // обработчик запроса поиска фильма
+  function handleSearchFilm(textForSearch) {
+    if (isFirstSearch) {
+      setIsLoading(true);
+      setIsFailed(false);
+      setIsFound(true);
+      beatFilmsApi
+        .downloadMoviesCards()
+        .then((fullCards) =>
+          Promise.all(beatFilmsApi.filterCardsInformation(fullCards))
+        )
+        .then((result) => {
+          setCards(result);
+          chooseFilms(result, textForSearch);
+          setIsFirstSearch(false);
         })
-        .catch((err) => {
-          setMessage(
-            `Ушипка при попытке удалить карточку с сервера: ${err.message}`
-          );
-          setIsInfoTooltipPopupOpen(true);
+        .catch(() => {
+          setIsFound(true);
+          setIsFailed(true);
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
-    });
+    } else {
+      setIsLoading(true);
+      chooseFilms(cards, textForSearch);
+      setIsLoading(false);
+    }
   }
 
-  // обработчик сохранения фильма
-  function handleSaveFilm(cardForSave) {
-    workingApi
-      .saveNewMovieCard(cardForSave)
-      .then((newCard) => {
-        // обновим массив карточек
-        setSavedCards(
-          savedCards.map((item) => {
-            const itemUpdated = item;
-            if (item.movieId === newCard.movieId) {
-              itemUpdated.owner = newCard.owner;
-            }
-            return itemUpdated;
-          })
-        );
-      })
-      .catch((err) => {
-        setMessage(
-          `Ушипка при попытке сохранить карточку на сервер: ${err.message}`
-        );
-        setIsInfoTooltipPopupOpen(true);
-      });
-  }
-
-  //  обработчик сабмита профиля
-  function handleSubmitProfile(setIsSubmitButton, setIsDisabled, userData) {
-    setCommonError("");
-    workingApi
-      .setNewUserInfo({ name: userData.name, email: userData.email })
-      .then((updateData) => {
-        setMessage("Данные профиля успешно обновлены!");
-        setIsSucess(true);
-        setIsInfoTooltipPopupOpen(true);
-        setCurrentUser(updateData);
-        setIsSubmitButton(false);
-        setIsDisabled(true);
-      })
-      .catch((err) => {
-        if (err === 409) {
-          setCommonError("Пользователь с таким email уже существует! :-(");
-        } else {
-          setCommonError("При обновлении профиля произошла ошибка.");
-        }
-        setCurrentUser(currentUser);
-      });
+  // обработчик поиска сохраненного фильма
+  function handleSearchSavedFilm(textForSearch) {
+    setIsLoading(true);
+    const filteredCards = filterCardsByString(savedCards, textForSearch);
+    setSavedCardsFiltered(filteredCards);
+    // отфильтрованные карточки с учетом положения слайдера
+    const shortFilteredCards = filterCardsByShorts(filteredCards, isShortFilms);
+    setSavedCardsForDisplay(shortFilteredCards);
+    if (shortFilteredCards.length > 0) {
+      setIsFound(true);
+    } else {
+      setIsFound(false);
+    }
+    setIsLoading(false);
   }
 
   //  обработчик регистрации нового пользователя
@@ -244,7 +258,7 @@ function App() {
         auth
           .login({ email: userData.email, password: userData.password })
           .then((authData) => {
-              if (authData.token) {
+            if (authData.token) {
               setLoggedIn(true);
               navigate("/movies");
             }
@@ -304,6 +318,29 @@ function App() {
       });
   }
 
+  //  обработчик сабмита профиля
+  function handleSubmitProfile(setIsSubmitButton, setIsDisabled, userData) {
+    setCommonError("");
+    workingApi
+      .setNewUserInfo({ name: userData.name, email: userData.email })
+      .then((updateData) => {
+        setMessage("Данные профиля успешно обновлены!");
+        setIsSucess(true);
+        setIsInfoTooltipPopupOpen(true);
+        setCurrentUser(updateData);
+        setIsSubmitButton(false);
+        setIsDisabled(true);
+      })
+      .catch((err) => {
+        if (err === 409) {
+          setCommonError("Пользователь с таким email уже существует! :-(");
+        } else {
+          setCommonError("При обновлении профиля произошла ошибка.");
+        }
+        setCurrentUser(currentUser);
+      });
+  }
+
   // эффект при загрузке страницы для проверки наличия валидной куки
   useEffect(() => {
     auth
@@ -313,8 +350,6 @@ function App() {
           // авторизуем пользователя
           setCurrentUser(userData);
           setLoggedIn(true);
-          // при успешной авторизации переходим на страницу фильмов
-          navigate("/movies");
         }
       })
       .catch((err) => {
@@ -326,86 +361,60 @@ function App() {
       });
   }, [loggedIn]);
 
+  // обработчик удаления фильма
+  function handleDeleteFilm(cardForDelete) {
+    const cardToDelete = savedCards.filter(
+      (item) =>
+        item.movieId === cardForDelete.movieId && item.owner === currentUser._id
+    );
+    cardToDelete.forEach((element) => {
+      workingApi
+        .deleteMovieCard(element._id)
+        .then(() => {
+          // обновим массив карточек
+          setSavedCards(savedCards.filter((item) => item._id !== element._id));
+        })
+        .catch((err) => {
+          if (err === 401) {
+            setLoggedIn(false);
+            setCurrentUser({});
+            localStorage.clear();
+          } else {
+            setMessage(
+              `Ушипка при попытке удалить карточку с сервера: ${err.message}`
+            );
+            setIsInfoTooltipPopupOpen(true);
+          }
+        });
+    });
+  }
+
+  // обработчик сохранения фильма
+  function handleSaveFilm(cardForSave) {
+    workingApi
+      .saveNewMovieCard(cardForSave)
+      .then((newCard) => {
+        // обновим массив карточек
+        setSavedCards([...savedCards, newCard]);
+      })
+      .catch((err) => {
+        if (err === 401) {
+          setLoggedIn(false);
+          setCurrentUser({});
+          localStorage.clear();
+        } else {
+          setMessage(
+            `Ушипка при попытке сохранить карточку на сервер: ${err.message}`
+          );
+          setIsInfoTooltipPopupOpen(true);
+        }
+      });
+  }
+
   // обработчик вывода попапа с ошибкой api
   function handleInfoTooltip() {
     setIsInfoTooltipPopupOpen(!isInfoTooltipPopupOpen);
     setMessage("");
-  }
-
-  // функция фильтрации фильмов
-  function chooseFilms(cardsFilms, textForSearch) {
-    // отфильтрованные по поиску карточки
-    const filteredCards = filterCardsByString(cardsFilms, textForSearch);
-    setCardsFiltered(filteredCards);
-    // отфильтрованные карточки с учетом положения слайдера
-    const shortFilteredCards = filterCardsByShorts(filteredCards, isShortFilms);
-    setCardsForDisplay(shortFilteredCards.slice(0, cardsNumber));
-    if (shortFilteredCards.length > 0) {
-      setIsFound(true);
-      setIsButtonMoreDispayed(
-        shortFilteredCards.length >
-          shortFilteredCards.slice(0, cardsNumber).length
-      );
-    } else {
-      setIsButtonMoreDispayed(false);
-      setIsFound(false);
-    }
-    // сохраним результат в хранилище
-    localStorage.setItem("textForSearch", textForSearch);
-    localStorage.setItem(
-      "shortFilteredCards",
-      JSON.stringify(shortFilteredCards)
-    );
-    localStorage.setItem("isShortFilms", isShortFilms);
-    localStorage.setItem("isFound", isFound);
-  }
-
-  // обработчик запроса поиска фильма
-  function handleSearchFilm(textForSearch) {
-    if (isFirstSearch) {
-      setIsLoading(true);
-      setIsFailed(false);
-      setIsFound(true);
-      beatFilmsApi
-        .downloadMoviesCards()
-        .then((fullCards) =>
-          Promise.all(beatFilmsApi.filterCardsInformation(fullCards))
-        )
-        .then((result) => {
-          setCards(result);
-          chooseFilms(result, textForSearch);
-          setIsFirstSearch(false);
-        })
-        .catch(() => {
-          setIsFound(true);
-          setIsFailed(true);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } else {
-      setIsLoading(true);
-      chooseFilms(cards, textForSearch);
-      setIsLoading(false);
-    }
-  }
-
-  // обработчик поиска сохраненного фильма
-  function handleSearchSavedFilm(textForSearch) {
-    setIsLoading(true);
-    const filteredCards = filterCardsByString(savedCards, textForSearch);
-    // отфильтрованные карточки с учетом положения слайдера
-    const shortFilteredCards = filterCardsByShorts(
-      filteredCards,
-      !isShortFilms
-    );
-    setSavedCardsForDisplay(shortFilteredCards);
-    if (shortFilteredCards.length > 0) {
-      setIsFound(true);
-    } else {
-      setIsFound(false);
-    }
-    setIsLoading(false);
   }
 
   // установим временную задержку для обработчика изменения разрешения экрана
@@ -492,7 +501,7 @@ function App() {
               handleDeleteFilm={handleDeleteFilm}
               handleSaveFilm={handleSaveFilm}
               handleSearchFilm={handleSearchFilm}
-              textForSearch={textForSearchFromLocalStorage}
+              savedTextForSearch={textForSearchFromLocalStorage}
               savedCards={savedCards}
             />
           }

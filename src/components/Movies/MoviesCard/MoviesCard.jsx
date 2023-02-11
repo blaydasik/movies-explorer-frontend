@@ -16,13 +16,14 @@ function MoviesCard({ card, handleDeleteFilm, handleSaveFilm, savedCards }) {
   const isSavedMovies = location.pathname === "/saved-movies";
 
   // определим сохранен ли фильм текущим пользователем
-  const [isSaved, setIsSave] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   React.useEffect(() => {
-      if (loggedIn) {
+    if (loggedIn) {
+      setIsSaved(false);
       savedCards.forEach((item) => {
         if (item.owner === currentUser._id && item.movieId === card.movieId) {
-          setIsSave(true);
+          setIsSaved(true);
         }
       });
     }
@@ -38,7 +39,6 @@ function MoviesCard({ card, handleDeleteFilm, handleSaveFilm, savedCards }) {
   const Buttontext = isSaved && !isSavedMovies ? "" : "Сохранить";
 
   function handleProceedCard() {
-    setIsSave(!isSaved);
     if (!isSaved) {
       handleSaveFilm(card);
     } else {

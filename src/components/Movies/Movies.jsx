@@ -1,3 +1,5 @@
+import React from "react";
+
 import "./Movies.css";
 
 import SearchForm from "./SearchForm/SearchForm.jsx";
@@ -17,7 +19,7 @@ function Movies({
   handleDeleteFilm,
   handleSaveFilm,
   handleSearchFilm,
-  textForSearch,
+  savedTextForSearch,
   savedCards
 }) {
   let message;
@@ -38,7 +40,7 @@ function Movies({
         setIsShortFilms={setIsShortFilms}
         handleShortFilms={handleShortFilms}
         handleSearchFilm={handleSearchFilm}
-        textForSearch={textForSearch}
+        savedTextForSearch={savedTextForSearch}
       />
       <div className="movies-preloader">
         {isLoading && <Preloader />}
