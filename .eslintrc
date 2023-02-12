@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "airbnb-base",
+    "prettier",
+    "plugin:react/recommended"
+  ],
+  "parserOptions": {"ecmaFeatures": {"jsx": true}},  
+  "rules": {
+    "no-console": ["error", { "allow": ["log"] }],
+    "import/no-unresolved": ["error", { "commonjs": true }],
+    "import/extensions": ["error", { "js": ["always"] }],
+    "no-underscore-dangle": ["error", { "allow": ["_id", "_request", "_validateAnswer"] }],
+    "no-param-reassign" :"off",
+    "react/prop-types": "off"
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "jasmine": true
+  }
+}

@@ -1,26 +1,41 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { useLocation } from 'react-router-dom'
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 
-import './Form.css'
+import "./Form.css";
 
-import { CurrentUserContext } from '../../contexts/CurrentUserContext'
-import { useFormAndValidation } from '../../hooks/useForm'
-import { formTextRegister, formTextLogin } from '../../utils/constants'
+import CurrentUserContext from "../../contexts/CurrentUserContext";
+import useFormAndValidation from "../../hooks/useForm";
+import {
+  formTextRegister,
+  formTextLogin,
+  nameRegex,
+  emailRegex,
+} from "../../utils/constants";
 
 function Form({ handleSubmit }) {
-  //подпишемся на контекст текущего пользователя
-  const commonError = React.useContext(CurrentUserContext).commonError
-  //подключим хук для валидации формы
-  const { values, handleChange, errors, isValid } = useFormAndValidation()
+  // подпишемся на контекст текущего пользователя
+  const { commonError } = React.useContext(CurrentUserContext);
+  // подключим хук для валидации формы
+  const {
+    values,
+    handleChange,
+    errors,
+    isValid,
+    setIsValid,
+    isCommonState,
+    setIsCommonState,
+  } = useFormAndValidation();
 
-  const location = useLocation()
-  //определим, находимся ли мы на странице регистрации или входа
-  const isSignUp = location.pathname === '/signup'
-  const options = isSignUp ? formTextRegister : formTextLogin
+  const location = useLocation();
+  // определим, находимся ли мы на странице регистрации или входа
+  const isSignUp = location.pathname === "/signup";
+  const options = isSignUp ? formTextRegister : formTextLogin;
 
   function handleButtonClick(evt) {
     evt.preventDefault();
+    setIsCommonState(true);
+    // блокировка от повторной отправки
+    setIsValid(false);
     handleSubmit(values);
   }
 
@@ -39,12 +54,13 @@ function Form({ handleSubmit }) {
                 type="text"
                 minLength="2"
                 maxLength="30"
-                value={values['name'] || ''}
+                value={values.name || ""}
                 onChange={handleChange}
                 placeholder="как звать"
                 required
+                pattern={nameRegex}
               ></input>
-              <span className="form__error">{errors['name'] || ''}</span>
+              <span className="form__error">{errors.name || ""}</span>
             </label>
           )}
           <label className="form__label">
@@ -54,12 +70,13 @@ function Form({ handleSubmit }) {
               id="email"
               name="email"
               type="email"
-              value={values['email'] || ''}
+              value={values.email || ""}
               onChange={handleChange}
               placeholder="куда письма слать"
               required
+              pattern={emailRegex}
             ></input>
-            <span className="form__error">{errors['email'] || ''}</span>
+            <span className="form__error">{errors.email || ""}</span>
           </label>
           <label className="form__label">
             <span className="form__span">Пароль</span>
@@ -68,21 +85,23 @@ function Form({ handleSubmit }) {
               id="password"
               name="password"
               type="password"
-              minLength="3"
-              maxLength="10"
-              value={values['password'] || ''}
+              minLength="6"
+              maxLength="15"
+              value={values.password || ""}
               onChange={handleChange}
               placeholder="как проверить"
               required
             ></input>
-            <span className="form__error">{errors['password'] || ''}</span>
+            <span className="form__error">{errors.password || ""}</span>
           </label>
-          <span className="form__error">{commonError}</span>
+          <span className="form__error">
+            {isCommonState ? commonError : ""}
+          </span>
           <button
             className="form__button-submit"
             id="form-submit"
             type="submit"
-            disabled={isValid ? '' : 'disabled'}
+            disabled={isValid ? "" : "disabled"}
           >
             {options.button}
           </button>
@@ -95,7 +114,7 @@ function Form({ handleSubmit }) {
         </Link>
       </nav>
     </article>
-  )
+  );
 }
 
-export default Form
+export default Form;

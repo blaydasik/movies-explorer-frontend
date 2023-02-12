@@ -1,34 +1,44 @@
-import React from 'react'
-import { useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import classnames from 'classnames'
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import classnames from "classnames";
 
-import './MoviesCard.css'
+import "./MoviesCard.css";
 
-import { CurrentUserContext } from '../../../contexts/CurrentUserContext'
-import { getTimeFromMins } from '../../../utils/constants'
+import CurrentUserContext from "../../../contexts/CurrentUserContext";
+import { getTimeFromMins } from "../../../utils/constants";
 
-function MoviesCard({ card, handleDeleteFilm, handleSaveFilm }) {
-  //подпишемся на контекст текущего пользователя
-  const currentUser = React.useContext(CurrentUserContext).currentUser
+function MoviesCard({ card, handleDeleteFilm, handleSaveFilm, savedCards }) {
+  // подпишемся на контекст текущего пользователя
+  const { currentUser, loggedIn } = React.useContext(CurrentUserContext);
 
-  //определим роут
-  const location = useLocation()
-  const isSavedMovies = location.pathname === '/saved-movies'
+  // определим роут
+  const location = useLocation();
+  const isSavedMovies = location.pathname === "/saved-movies";
 
-  //определим сохранен ли фильм текущим пользователем (currentUser._id)
-  const [isSaved, setIsSave] = useState(card.owner.some((user) => user === currentUser._id))
+  // определим сохранен ли фильм текущим пользователем
+  const [isSaved, setIsSaved] = useState(false);
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      setIsSaved(false);
+      savedCards.forEach((item) => {
+        if (item.owner === currentUser._id && item.movieId === card.movieId) {
+          setIsSaved(true);
+        }
+      });
+    }
+  }, [savedCards, loggedIn]);
+
   const classNameButtonSave = classnames({
-    'movies-card__button-save-clicked': isSaved,
-    'movies-card__button-save': !isSaved && !isSavedMovies,
-    'movies-card__button-save-none': isSavedMovies && !isSaved,
-    'movies-card__button-save-clicked_delete': isSavedMovies && isSaved
-  })
+    "movies-card__button-save-clicked": isSaved,
+    "movies-card__button-save": !isSaved && !isSavedMovies,
+    "movies-card__button-save-none": isSavedMovies && !isSaved,
+    "movies-card__button-save-clicked_delete": isSavedMovies && isSaved,
+  });
 
-  const Buttontext = isSaved && !isSavedMovies ? '' : 'Сохранить'
+  const Buttontext = isSaved && !isSavedMovies ? "" : "Сохранить";
 
   function handleProceedCard() {
-    setIsSave(!isSaved)
     if (!isSaved) {
       handleSaveFilm(card);
     } else {
@@ -49,8 +59,8 @@ function MoviesCard({ card, handleDeleteFilm, handleSaveFilm }) {
       >
         <img
           className="movies-card__image"
-          alt={card.image.name}
-          src={card.image.url}
+          alt={card.imageName}
+          src={card.image}
         />
       </a>
       <div className="movies-card__container">
@@ -62,7 +72,7 @@ function MoviesCard({ card, handleDeleteFilm, handleSaveFilm }) {
         </div>
       </div>
     </li>
-  )
+  );
 }
 
-export default MoviesCard
+export default MoviesCard;

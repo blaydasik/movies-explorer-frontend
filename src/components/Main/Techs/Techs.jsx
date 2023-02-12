@@ -1,4 +1,6 @@
-import './Techs.css'
+import React from "react";
+
+import "./Techs.css";
 
 function Techs() {
   return (
@@ -10,18 +12,18 @@ function Techs() {
           На курсе веб-разработки мы освоили множество заклинаний и заклятий.
           Вот 7 непростительных:
         </p>
-        <ul className='techs__list'>
-          <li className='techs__element'>HTML</li>
-          <li className='techs__element'>CSS</li>
-          <li className='techs__element'>JS</li>
-          <li className='techs__element'>React</li>
-          <li className='techs__element'>Git</li>
-          <li className='techs__element'>Express.js</li>
-          <li className='techs__element'>mongoDB</li>
+        <ul className="techs__list">
+          <li className="techs__element">HTML</li>
+          <li className="techs__element">CSS</li>
+          <li className="techs__element">JS</li>
+          <li className="techs__element">React</li>
+          <li className="techs__element">Git</li>
+          <li className="techs__element">Express.js</li>
+          <li className="techs__element">mongoDB</li>
         </ul>
       </div>
     </article>
-  )
+  );
 }
 
-export default Techs
+export default Techs;

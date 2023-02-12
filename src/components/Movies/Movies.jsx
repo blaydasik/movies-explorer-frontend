@@ -1,12 +1,13 @@
-import './Movies.css'
+import React from "react";
 
-import SearchForm from './SearchForm/SearchForm'
-import Preloader from './Preloader/Preloader'
-import MoviesCardList from './MoviesCardList/MoviesCardList'
+import "./Movies.css";
+
+import SearchForm from "./SearchForm/SearchForm.jsx";
+import Preloader from "./Preloader/Preloader.jsx";
+import MoviesCardList from "./MoviesCardList/MoviesCardList.jsx";
 
 function Movies({
   isLoading,
-  isFound,
   isFailed,
   cards,
   isButtonMoreDispayed,
@@ -15,35 +16,51 @@ function Movies({
   setIsShortFilms,
   handleShortFilms,
   handleDeleteFilm,
-  handleSaveFilm
+  handleSaveFilm,
+  handleSearchFilm,
+  savedTextForSearch,
+  savedCards,
 }) {
-  const message = isFailed
-    ? 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
-    : !isFound
-    ? 'Ничего не найдено'
-    : ''
+  let message;
+  // если в результате поиска фильмов ничего не найдено
+  const isFound = savedTextForSearch ? cards.length > 0 : true;
+
+  if (isFailed) {
+    message =
+      "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз";
+  } else if (!isFound) {
+    message = "Ничего не найдено";
+  } else {
+    message = "";
+  }
+
   return (
     <main className="main">
       <SearchForm
         isShortFilms={isShortFilms}
         setIsShortFilms={setIsShortFilms}
         handleShortFilms={handleShortFilms}
+        handleSearchFilm={handleSearchFilm}
+        savedTextForSearch={savedTextForSearch}
       />
       <div className="movies-preloader">
         {isLoading && <Preloader />}
-        {(!isFound || isFailed) && (
+        {!isLoading && (!isFound || isFailed) && (
           <p className="movies-preloader__not-found">{message}</p>
         )}
       </div>
-      <MoviesCardList
-        cards={cards}
-        handleButtonMoreClick={handleButtonMoreClick}
-        isButtonMoreDispayed={isButtonMoreDispayed}
-        handleDeleteFilm={handleDeleteFilm}
-        handleSaveFilm={handleSaveFilm}
-      />
+      {isFound && !isFailed && (
+        <MoviesCardList
+          cards={cards}
+          handleButtonMoreClick={handleButtonMoreClick}
+          isButtonMoreDispayed={isButtonMoreDispayed}
+          handleDeleteFilm={handleDeleteFilm}
+          handleSaveFilm={handleSaveFilm}
+          savedCards={savedCards}
+        />
+      )}
     </main>
-  )
+  );
 }
 
-export default Movies
+export default Movies;

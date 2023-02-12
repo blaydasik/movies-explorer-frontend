@@ -1,4 +1,6 @@
-import './Portfolio.css'
+import React from "react";
+
+import "./Portfolio.css";
 
 function Portfolio() {
   return (
@@ -42,7 +44,7 @@ function Portfolio() {
         </ul>
       </div>
     </article>
-  )
+  );
 }
 
-export default Portfolio
+export default Portfolio;
