@@ -8,7 +8,6 @@ import MoviesCardList from "./MoviesCardList/MoviesCardList.jsx";
 
 function Movies({
   isLoading,
-  isFound,
   isFailed,
   cards,
   isButtonMoreDispayed,
@@ -20,9 +19,11 @@ function Movies({
   handleSaveFilm,
   handleSearchFilm,
   savedTextForSearch,
-  savedCards
+  savedCards,
 }) {
   let message;
+  // если в результате поиска фильмов ничего не найдено
+  const isFound = savedTextForSearch ? cards.length > 0 : true;
 
   if (isFailed) {
     message =
@@ -44,7 +45,7 @@ function Movies({
       />
       <div className="movies-preloader">
         {isLoading && <Preloader />}
-        {(!isFound || isFailed) && (
+        {!isLoading && (!isFound || isFailed) && (
           <p className="movies-preloader__not-found">{message}</p>
         )}
       </div>

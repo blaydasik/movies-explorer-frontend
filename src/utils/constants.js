@@ -88,15 +88,22 @@ const widthScreen = {
   medium: 690,
 };
 
+// количество фильмов, отображаемое при разном разсере экрана
+const amountMovies = {
+  wide: { cards: 12, more: 3 },
+  medium: { cards: 8, more: 2 },
+  small: { cards: 5, more: 2 },
+};
+
 // функция, определяющая количество карточек для отображения
 export function amountCardsToView(width) {
   if (width > widthScreen.wide) {
-    return { cards: 12, more: 3 };
+    return amountMovies.wide;
   }
   if (width > widthScreen.medium) {
-    return { cards: 8, more: 2 };
+    return amountMovies.medium;
   }
-  return { cards: 5, more: 2 };
+  return amountMovies.small;
 }
 
 // регулярка для валидации поля имя

@@ -56,8 +56,6 @@ function App() {
   const [isShortFilms, setIsShortFilms] = useState(false);
   // происходит ли поиск фильмов (отображает прелоадер)
   const [isLoading, setIsLoading] = useState(false);
-  // если в результате поиска фильмов ничего не найдено
-  const [isFound, setIsFound] = useState(true);
   // если в процессе поиска возникла ушипка
   const [isFailed, setIsFailed] = useState(false);
   // отслеживаем ширниу экрана
@@ -93,7 +91,7 @@ function App() {
       workingApi
         .downloadMovieCards()
         .then((cardsData) => {
-          setSavedCards(cardsData);
+          setSavedCards(() => cardsData);
           setSavedCardsFiltered(cardsData);
           setSavedCardsForDisplay(cardsData);
         })
@@ -106,16 +104,6 @@ function App() {
 
       // установим данные из локального хранилища для роута movies
       if (isLocationMovies) {
-        if (isFirstSearch) {
-          setIsFound(true);
-        } else {
-          setIsFound(
-            filterCardsByShorts(
-              moviesFromLocalStorage,
-              isShortFilmsFromLocalStorage
-            ).length > 0
-          );
-        }
         setIsShortFilms(isShortFilmsFromLocalStorage);
         setCardsForDisplay(() =>
           textForSearchFromLocalStorage
@@ -132,7 +120,6 @@ function App() {
         }
       } else {
         setIsShortFilms(false);
-        setIsFound(savedCards.length > 0);
       }
       setCommonError("");
     }
@@ -161,20 +148,16 @@ function App() {
           cardsResult.length >
             cardsResult.slice(0, amountCardsToView(width).cards).length
         );
-        setIsFound(true);
       } else {
         setIsButtonMoreDispayed(false);
-        setIsFound(false);
-      }
+         }
       localStorage.setItem("isShortFilms", !isShortFilms);
-      localStorage.setItem("isFound", isFound);
     } else {
       const shortFilteredCards = filterCardsByShorts(
         savedCardsFiltered,
         !isShortFilms
       );
       setSavedCardsForDisplay(shortFilteredCards);
-      setIsFound(shortFilteredCards.length > 0);
     }
   }
 
@@ -189,14 +172,12 @@ function App() {
       shortFilteredCards.slice(0, amountCardsToView(width).cards)
     );
     if (shortFilteredCards.length > 0) {
-      setIsFound(true);
       setIsButtonMoreDispayed(
         shortFilteredCards.length >
           shortFilteredCards.slice(0, amountCardsToView(width).cards).length
       );
     } else {
       setIsButtonMoreDispayed(false);
-      setIsFound(false);
     }
     // сохраним результат в хранилище
     localStorage.setItem("textForSearch", textForSearch);
@@ -209,7 +190,6 @@ function App() {
     if (isFirstSearch) {
       setIsLoading(true);
       setIsFailed(false);
-      setIsFound(true);
       beatFilmsApi
         .downloadMoviesCards()
         .then((fullCards) =>
@@ -221,7 +201,6 @@ function App() {
           setIsFirstSearch(false);
         })
         .catch(() => {
-          setIsFound(true);
           setIsFailed(true);
         })
         .finally(() => {
@@ -242,11 +221,6 @@ function App() {
     // отфильтрованные карточки с учетом положения слайдера
     const shortFilteredCards = filterCardsByShorts(filteredCards, isShortFilms);
     setSavedCardsForDisplay(shortFilteredCards);
-    if (shortFilteredCards.length > 0) {
-      setIsFound(true);
-    } else {
-      setIsFound(false);
-    }
     setIsLoading(false);
   }
 
@@ -494,7 +468,6 @@ function App() {
             <ProtectedRoute
               component={Movies}
               isLoading={isLoading}
-              isFound={isFound}
               isFailed={isFailed}
               cards={cardsForDisplay}
               isButtonMoreDispayed={isButtonMoreDispayed}
@@ -516,7 +489,6 @@ function App() {
             <ProtectedRoute
               component={SavedMovies}
               isLoading={isLoading}
-              isFound={isFound}
               isFailed={isFailed}
               cards={savedCardsForDisplay}
               isShortFilms={isShortFilms}

@@ -11,7 +11,6 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function SavedMovies({
   isLoading,
-  isFound,
   isFailed,
   cards,
   isShortFilms,
@@ -27,6 +26,8 @@ function SavedMovies({
   // отберем movieId карточек данного пользователя
   const movieIdList = savedCards.map((item) => (item.owner === currentUser._id) ? item.movieId : []);
   const cardsSaved = cards.filter((item) => movieIdList.indexOf(item.movieId)>=0 );
+  // если в результате поиска фильмов ничего не найдено
+  const isFound = cards.length === savedCards.length ? true : cardsSaved.length > 0;
 
   let message;
   if (isFailed) {
